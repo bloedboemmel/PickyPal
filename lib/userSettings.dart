@@ -1,10 +1,9 @@
-/*
+
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key}) : super(key: key);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -49,9 +48,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
       body: Column(
           children: [
       CheckboxListTile(
@@ -118,5 +114,71 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+
+  Widget settings(BuildContext context) {
+    return  Column(
+        children: [
+          CheckboxListTile(
+            title: Text('Gluten-free'),
+            value: _glutenFree,
+            onChanged: (value) {
+              setState(() {
+                _glutenFree = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: Text('Lactose-free'),
+            value: _lactoseFree,
+            onChanged: (value) {
+              setState(() {
+                _lactoseFree = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: Text('Nut-free'),
+            value: _nutFree,
+            onChanged: (value) {
+              setState(() {
+                _nutFree = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: Text('Vegetarian'),
+            value: _vegetarian,
+            onChanged: (value) {
+              setState(() {
+                _vegetarian = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: Text('Vegan'),
+            value: _vegan,
+            onChanged: (value) {
+              setState(() {
+                _vegan = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: Text('Palm oil Free'),
+            value: _palmOilFree,
+            onChanged: (value) {
+              setState(() {
+                _palmOilFree = value!;
+                _saveAllergies();
+              });
+            },
+          ),
+        ],
+      );
+  }
 }
- */
