@@ -1,4 +1,3 @@
-import 'dart:ffi';
 enum YESMAYBENO{
   yes,
   maybe,
@@ -21,13 +20,14 @@ YESMAYBENO suitableFor(List<dynamic> list, String str){
 class Product {
   String title = "";
   String barcode = "";
-   bool glutenfree = false;
-   bool lactosefree = false;
-   bool nutfree = false;
-   YESMAYBENO vegan = YESMAYBENO.maybe;
-   YESMAYBENO vegeterian =   YESMAYBENO.maybe;
-   YESMAYBENO palmoilfree = YESMAYBENO.maybe;
-  Product({required this.title, required this.barcode, glutenfree, lactosefree, nutfree, vegan, vegeterian, palmoilfree
+  bool glutenfree = false;
+  bool lactosefree = false;
+  bool nutfree = false;
+  YESMAYBENO vegan = YESMAYBENO.maybe;
+  YESMAYBENO vegeterian =   YESMAYBENO.maybe;
+  YESMAYBENO palmoilfree = YESMAYBENO.maybe;
+  Product({required this.title, required this.barcode, required this.glutenfree,
+    required this.lactosefree, required this.nutfree, required this.vegan, required this.vegeterian, required this.palmoilfree
   });
   bool isAllFree(){
     return nutfree && glutenfree && lactosefree;

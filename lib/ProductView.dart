@@ -40,8 +40,9 @@ class _Product extends State<ProductView>{
   }
 
   Future<Product> getResult(String barcode)async {
+    YESMAYBENO maybe = YESMAYBENO.maybe;
     if (barcode == ""){
-      return Product(title: "title", barcode: barcode);
+      return Product(title: "title", barcode: "barcode", glutenfree: false, lactosefree: false, nutfree: false, vegan: maybe, vegeterian: maybe, palmoilfree: maybe);
     }
     String uri = "https://world.openfoodfacts.org/api/v2/product/";
     final response = await http
@@ -54,20 +55,12 @@ class _Product extends State<ProductView>{
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Failed to load product');
     }
-
-    return Product(title: "title",
-        barcode: "barcode",
-        glutenfree: true,
-        lactosefree: true,
-        nutfree: true);
   }
   @override
   Widget build(BuildContext context) {
-    late Future<Product> futureProduct;
-    late Future<Widget> widget;
-    Product normalProduct;
+    late Future<Widget> widget = ShowText(barcode);
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -75,11 +68,11 @@ class _Product extends State<ProductView>{
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Fetch Data Example'),
+          title: const Text('Result'),
         ),
         body: Center(
           child: FutureBuilder<Widget>(
-            future: widget =  ShowText(barcode),
+            future: widget,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return snapshot.data;
@@ -154,14 +147,14 @@ class _Product extends State<ProductView>{
     if (_glutenFree && !product.glutenfree){
       return YESMAYBENO.no;
     }
-    if (_vegan && !(product.vegeterian == YESMAYBENO.no) && !(product.vegan == YESMAYBENO.no)){
+    if (_vegan && (product.vegeterian == YESMAYBENO.no || product.vegan == YESMAYBENO.no)){
       return YESMAYBENO.no;
 
     }
-    if (_vegetarian && !(product.vegeterian == YESMAYBENO.no)){
+    if (_vegetarian && product.vegeterian == YESMAYBENO.no){
       return YESMAYBENO.no;
     }
-    if (_vegan && !(product.vegeterian == YESMAYBENO.maybe) && !(product.vegan == YESMAYBENO.maybe)){
+    if (_vegan && (product.vegeterian == YESMAYBENO.maybe || product.vegan == YESMAYBENO.maybe)){
       return YESMAYBENO.maybe;
 
     }
