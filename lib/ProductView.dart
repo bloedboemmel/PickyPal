@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_3/ProductChecker.dart';
 import 'package:flutter_barcode_3/product.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pie_chart/pie_chart.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
   const ProductViewClass({
@@ -28,9 +28,11 @@ class ProductView extends StatefulWidget{
   }
 }
 
-class _Product extends State<ProductView>{
+class _Product extends State<ProductView> {
   final String barcode;
+
   _Product({required this.barcode});
+
   late String scanresult;
 
   @override
@@ -39,10 +41,17 @@ class _Product extends State<ProductView>{
     super.initState();
   }
 
-  Future<Product> getResult(String barcode)async {
+  Future<Product> getResult(String barcode) async {
     YESMAYBENO maybe = YESMAYBENO.maybe;
-    if (barcode == ""){
-      return Product(title: "title", barcode: "barcode", glutenfree: false, lactosefree: false, nutfree: false, vegan: maybe, vegeterian: maybe, palmoilfree: maybe);
+    if (barcode == "") {
+      return Product(title: "title",
+          barcode: "barcode",
+          glutenfree: false,
+          lactosefree: false,
+          nutfree: false,
+          vegan: maybe,
+          vegeterian: maybe,
+          palmoilfree: maybe);
     }
     String uri = "https://world.openfoodfacts.org/api/v2/product/";
     final response = await http
@@ -58,9 +67,10 @@ class _Product extends State<ProductView>{
       throw Exception('Failed to load product');
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    late Future<Widget> widget = ShowText(barcode);
+    late Future<Widget> widget = PieChartProducts(barcode);
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -88,86 +98,57 @@ class _Product extends State<ProductView>{
       ),
     );
   }
-  Future<Widget> ShowText(String barcode) async{
+
+  Future<Widget> PieChartProducts(String barcode) async {
     Product product = await getResult(barcode);
-    Color lightColor;
-    IconData lightIcon;
-    String text;
-
-    // Check if any of the user's allergies match the product's allergies
-    YESMAYBENO isSafeForAllergies = await compareProduct(product);
-
-    // Determine which color and icon to use based on whether the product is safe
-    if (isSafeForAllergies == YESMAYBENO.yes) {
-      lightColor = Colors.green;
-      lightIcon = Icons.check;
-      text = 'Safe for allergies';
-    } else if (isSafeForAllergies == YESMAYBENO.no) {
-      lightColor = Colors.red;
-      lightIcon = Icons.warning;
-      text = 'Not safe for allergies';
-    }
-    else {
-      lightColor = Colors.orange;
-      lightIcon = Icons.question_mark;
-      text = 'Not sure';
+    List<Allergy> allergies = await checkAll(product);
+    YESMAYBENO suitable = isSuitable(allergies);
+    Map<String, Color> colorMap = {};
+    Map<String, double> dataMap = {};
+    for (var allergy in allergies) {
+      colorMap[allergy.name] = allergy.color();
+      dataMap[allergy.name] = 1.0;
     }
     return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            lightIcon,
-            color: lightColor,
-            size: 150,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        PieChart(
+          dataMap: dataMap,
+          colorList: colorMap.values.toList(),
+          chartType: ChartType.disc,
+          chartRadius: MediaQuery
+              .of(context)
+              .size
+              .width / 3,
+          centerText: suitable == YESMAYBENO.yes ? 'Suitable' : 'Not Suitable',
+          legendOptions: LegendOptions(
+            showLegendsInRow: false,
+            legendPosition: LegendPosition.right,
+            showLegends: true,
+            legendTextStyle: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Text(
-              text,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold)
-          )
-        ]
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: false,
+            showChartValues: false,
+          ),
+          initialAngleInDegree: 0,
+          animationDuration: Duration(milliseconds: 800),
+        ),
+        SizedBox(height: 16.0),
+        /*Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildLegendItem(Icons.nature, 'Gluten Free', allergies['gluten']!),
+            SizedBox(width: 16.0),
+            _buildLegendItem(Icons.spa, 'Vegan', allergies['vegan']!),
+            SizedBox(width: 16.0),
+            _buildLegendItem(Icons.local_dining, 'Dairy Free', allergies['dairy']!),
+          ],
+        ),*/
+      ],
     );
   }
-  Future<YESMAYBENO> compareProduct (product)async {
-    bool _glutenFree = false;
-    bool _lactoseFree = false;
-    bool _nutFree = false;
-    bool _vegetarian = false;
-    bool _vegan = false;
-    bool _palmOilFree = false;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _glutenFree = prefs.getBool('glutenFree') ?? false;
-    _lactoseFree = prefs.getBool('lactoseFree') ?? false;
-    _nutFree = prefs.getBool('nutFree') ?? false;
-    _vegetarian = prefs.getBool('vegetarian') ?? false;
-    _vegan = prefs.getBool('vegan') ?? false;
-    _palmOilFree = prefs.getBool('palmOilFree') ?? false;
-
-    if (_glutenFree && !product.glutenfree){
-      return YESMAYBENO.no;
-    }
-    if (_vegan && (product.vegeterian == YESMAYBENO.no || product.vegan == YESMAYBENO.no)){
-      return YESMAYBENO.no;
-
-    }
-    if (_vegetarian && product.vegeterian == YESMAYBENO.no){
-      return YESMAYBENO.no;
-    }
-    if (_vegan && (product.vegeterian == YESMAYBENO.maybe || product.vegan == YESMAYBENO.maybe)){
-      return YESMAYBENO.maybe;
-
-    }
-    if (_lactoseFree && !product.lactosefree){
-      return YESMAYBENO.no;
-    }
-    if (_palmOilFree && !(product.palmoilfree == YESMAYBENO.yes)){
-      return product.palmoilfree;
-    }
-    if (_nutFree && !product.nutfree){
-      return YESMAYBENO.no;
-    }
-    return YESMAYBENO.yes;
-  }
-
 }
