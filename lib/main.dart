@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_3/ScannerScreen.dart';
 import 'package:flutter_barcode_3/userSettings.dart';
-
-void main() => runApp(MyApp());
+import 'package:provider/provider.dart';
+final globalNavigatorKey = GlobalKey<NavigatorState>();
+void main() => runApp(
+    FutureProvider<UserPreferences>(
+        initialData: UserPreferences.empty(),
+        create: (context) => PreferencesFromStorage(),
+        child: MyApp()
+    ));
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

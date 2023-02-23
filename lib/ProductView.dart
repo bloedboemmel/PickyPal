@@ -3,16 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_3/ProductChecker.dart';
 import 'package:flutter_barcode_3/product.dart';
+import 'package:flutter_barcode_3/userSettings.dart';
 import 'package:http/http.dart' as http;
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
+
   const ProductViewClass({
     required Key key,
     required this.barcode,
   }) :super(key: key);
   @override
   Widget build(BuildContext context) {
+
+
     return  MaterialApp(
       home: ProductView(barcode: barcode),
     );
@@ -70,7 +75,9 @@ class _Product extends State<ProductView> {
 
   @override
   Widget build(BuildContext context) {
-    late Future<Widget> widget = PieChartProducts(barcode);
+
+    UserPreferences userPreferences = Provider.of<UserPreferences>(context);
+    late Future<Widget> widget = PieChartProducts(userPreferences, barcode);
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -99,9 +106,9 @@ class _Product extends State<ProductView> {
     );
   }
 
-  Future<Widget> PieChartProducts(String barcode) async {
+  Future<Widget> PieChartProducts(UserPreferences userPreferences, String barcode) async {
     Product product = await getResult(barcode);
-    List<Allergy> allergies = await checkAll(product);
+    List<Allergy> allergies = await checkAll(userPreferences, product);
     YESMAYBENO suitable = isSuitable(allergies);
     Map<String, Color> colorMap = {};
     Map<String, double> dataMap = {};
@@ -109,8 +116,7 @@ class _Product extends State<ProductView> {
       colorMap[allergy.name] = allergy.color();
       dataMap[allergy.name] = 1.0;
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
       children: [
         PieChart(
           dataMap: dataMap,
@@ -119,25 +125,45 @@ class _Product extends State<ProductView> {
           chartRadius: MediaQuery
               .of(context)
               .size
-              .width / 3,
+              .width / 1.1,
           centerText: suitable == YESMAYBENO.yes ? 'Suitable' : 'Not Suitable',
-          legendOptions: LegendOptions(
-            showLegendsInRow: false,
-            legendPosition: LegendPosition.right,
-            showLegends: true,
-            legendTextStyle: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+
           chartValuesOptions: ChartValuesOptions(
             showChartValueBackground: false,
             showChartValues: false,
           ),
+          legendOptions: LegendOptions(showLegends: false),
           initialAngleInDegree: 0,
           animationDuration: Duration(milliseconds: 800),
         ),
-        SizedBox(height: 16.0),
+        Center(
+          child: Container(
+            height: MediaQuery.of(context).size.width / 2.5,
+            width: MediaQuery.of(context).size.width / 2.5,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(2),
+              child:  Container(
+                height: MediaQuery.of(context).size.width / 2.5,
+                width: MediaQuery.of(context).size.width / 2.5,
+                decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: getColorForYesMaybeNo(suitable)
+                ),
+                child: Center(
+                    child: Icon(
+                      getIconForYesMaybeNo(suitable),
+                      size: 40
+                    )
+                )
+
+              ),
+            ),
+          ),
+        ),
         /*Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -150,5 +176,67 @@ class _Product extends State<ProductView> {
         ),*/
       ],
     );
+  }
+  YESMAYBENO isSuitable(List<Allergy> allergies){
+    //If one of the allergies is no, the product is not suitable
+    for (Allergy allergy in allergies) {
+      if (allergy.suitable == YESMAYBENO.no) {
+        return YESMAYBENO.no;
+      }
+    }
+    //If one of the allergies is maybe, the product is maybe suitable
+    for (Allergy allergy in allergies) {
+      if (allergy.suitable == YESMAYBENO.maybe) {
+        return YESMAYBENO.maybe;
+      }
+    }
+    //If all of the allergies are yes, the product is suitable
+    return YESMAYBENO.yes;
+  }
+  Future<List<Allergy>> checkAll(UserPreferences userPreferences, Product product) async {
+    List<Allergy> allergies = List.empty(growable: true);
+    if(userPreferences.glutenFree){
+      allergies.add(Allergy(name: "Glutenfree", suitable: isGlutenFree(product))) ;
+    }
+    if(userPreferences.lactoseFree){
+      allergies.add(Allergy(name: "Lactosefree", suitable: isLactoseFree(product))) ;
+    }
+    if(userPreferences.nutFree){
+      allergies.add(Allergy(name: "Nutfree", suitable: isNutFree(product))) ;
+    }
+    if(userPreferences.vegetarian){
+      allergies.add(Allergy(name: "Vegetarian", suitable: isVegetarian(product))) ;
+    }
+    if(userPreferences.vegan){
+      allergies.add(Allergy(name: "Vegan", suitable: isVegan(product))) ;
+    }
+    if(userPreferences.palmOilFree){
+      allergies.add(Allergy(name: "PalmOilFree", suitable: isPalmOilFree(product))) ;
+    }
+    return allergies;
+  }
+  YESMAYBENO isGlutenFree(Product product) {
+    return product.glutenfree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isLactoseFree(Product product) {
+    return product.lactosefree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isNutFree(Product product) {
+    return product.nutfree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isVegetarian(Product product) {
+    return product.vegeterian;
+  }
+  YESMAYBENO isVegan(Product product) {
+    if (product.vegeterian == YESMAYBENO.no || product.vegan == YESMAYBENO.no){
+      return YESMAYBENO.no;
+    }
+    if (product.vegeterian == YESMAYBENO.maybe || product.vegan == YESMAYBENO.maybe){
+      return YESMAYBENO.maybe;
+    }
+    return YESMAYBENO.yes;
+  }
+  YESMAYBENO isPalmOilFree(Product product) {
+    return product.palmoilfree;
   }
 }
