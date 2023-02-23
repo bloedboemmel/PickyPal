@@ -3,7 +3,8 @@ import 'package:flutter_barcode_3/product.dart';
 class Allergy{
   YESMAYBENO suitable;
   String name;
-  Allergy({required this.name, required this.suitable});
+  IconData icon;
+  Allergy({required this.name, required this.suitable, this.icon = Icons.snowing});
   color()=> getColorForYesMaybeNo(suitable);
 }
 MaterialColor getColorForYesMaybeNo(YESMAYBENO yesmaybeno) {

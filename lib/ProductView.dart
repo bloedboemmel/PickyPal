@@ -1,11 +1,10 @@
 import 'dart:convert';
-
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_3/ProductChecker.dart';
 import 'package:flutter_barcode_3/product.dart';
 import 'package:flutter_barcode_3/userSettings.dart';
 import 'package:http/http.dart' as http;
-import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
@@ -112,29 +111,22 @@ class _Product extends State<ProductView> {
     YESMAYBENO suitable = isSuitable(allergies);
     Map<String, Color> colorMap = {};
     Map<String, double> dataMap = {};
+    List<PieChartSectionData> piechartsections =  List.empty(growable: true);
     for (var allergy in allergies) {
       colorMap[allergy.name] = allergy.color();
       dataMap[allergy.name] = 1.0;
+      piechartsections.add(PieChartSectionData(
+          color: allergy.color(),
+          badgeWidget: Icon(allergy.icon)
+      ));
+
     }
     return Stack(
       children: [
         PieChart(
-          dataMap: dataMap,
-          colorList: colorMap.values.toList(),
-          chartType: ChartType.disc,
-          chartRadius: MediaQuery
-              .of(context)
-              .size
-              .width / 1.1,
-          centerText: suitable == YESMAYBENO.yes ? 'Suitable' : 'Not Suitable',
-
-          chartValuesOptions: ChartValuesOptions(
-            showChartValueBackground: false,
-            showChartValues: false,
-          ),
-          legendOptions: LegendOptions(showLegends: false),
-          initialAngleInDegree: 0,
-          animationDuration: Duration(milliseconds: 800),
+          PieChartData(sections: piechartsections),
+          swapAnimationDuration: Duration(milliseconds: 150), // Optional
+          swapAnimationCurve: Curves.linear, // Optional
         ),
         Center(
           child: Container(
@@ -196,22 +188,22 @@ class _Product extends State<ProductView> {
   Future<List<Allergy>> checkAll(UserPreferences userPreferences, Product product) async {
     List<Allergy> allergies = List.empty(growable: true);
     if(userPreferences.glutenFree){
-      allergies.add(Allergy(name: "Glutenfree", suitable: isGlutenFree(product))) ;
+      allergies.add(Allergy(name: "Glutenfree", suitable: isGlutenFree(product), icon: Icons.local_pizza)) ;
     }
     if(userPreferences.lactoseFree){
-      allergies.add(Allergy(name: "Lactosefree", suitable: isLactoseFree(product))) ;
+      allergies.add(Allergy(name: "Lactosefree", suitable: isLactoseFree(product), icon:Icons.local_drink )) ;
     }
     if(userPreferences.nutFree){
-      allergies.add(Allergy(name: "Nutfree", suitable: isNutFree(product))) ;
+      allergies.add(Allergy(name: "Nutfree", suitable: isNutFree(product), icon: Icons.do_not_disturb_on)) ;
     }
     if(userPreferences.vegetarian){
-      allergies.add(Allergy(name: "Vegetarian", suitable: isVegetarian(product))) ;
+      allergies.add(Allergy(name: "Vegetarian", suitable: isVegetarian(product), icon: Icons.eco)) ;
     }
     if(userPreferences.vegan){
-      allergies.add(Allergy(name: "Vegan", suitable: isVegan(product))) ;
+      allergies.add(Allergy(name: "Vegan", suitable: isVegan(product), icon: Icons.grass_outlined)) ;
     }
     if(userPreferences.palmOilFree){
-      allergies.add(Allergy(name: "PalmOilFree", suitable: isPalmOilFree(product))) ;
+      allergies.add(Allergy(name: "PalmOilFree", suitable: isPalmOilFree(product), icon: Icons.not_interested)) ;
     }
     return allergies;
   }
