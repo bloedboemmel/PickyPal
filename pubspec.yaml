@@ -45,6 +45,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Allergies
+      fonts:
+        - asset: fonts/Allergies.ttf
 flutter_icons:
   android: "launcher_icon"
   ios: true

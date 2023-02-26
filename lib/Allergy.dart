@@ -1,28 +1,29 @@
 import 'package:PickyPal/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:PickyPal/allergies_icons.dart';
 class Allergy{
   YESMAYBENO suitable;
   String name;
   IconData icon;
-  Allergy({required this.name, required this.suitable, this.icon = Icons.snowing});
+  Allergy({required this.name, required this.suitable, this.icon = Allergies.gluten});
   factory Allergy.glutenfree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.glutenFree, suitable: suitable, icon: Icons.local_pizza);
+    return Allergy(name: AppLocalizations.of(context)!.glutenFree, suitable: suitable, icon: Allergies.gluten);
   }
   factory Allergy.vegan({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.vegan, suitable: suitable, icon: Icons.grass_outlined);
+    return Allergy(name: AppLocalizations.of(context)!.vegan, suitable: suitable, icon: Allergies.vegan);
   }
   factory Allergy.vegetarian({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.vegetarian, suitable: suitable, icon: Icons.eco);
+    return Allergy(name: AppLocalizations.of(context)!.vegetarian, suitable: suitable, icon: Allergies.vegeterian);
   }
   factory Allergy.nutsFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.nutFree, suitable: suitable, icon: Icons.emoji_food_beverage);
+    return Allergy(name: AppLocalizations.of(context)!.nutFree, suitable: suitable, icon: Allergies.nut);
   }
   factory Allergy.dairyFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.dairyFree, suitable: suitable, icon: Icons.local_drink);
+    return Allergy(name: AppLocalizations.of(context)!.dairyFree, suitable: suitable, icon: Allergies.milk);
   }
   factory Allergy.palmOilFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
-    return Allergy(name: AppLocalizations.of(context)!.palmOilFree, suitable: suitable, icon: Icons.not_interested);
+    return Allergy(name: AppLocalizations.of(context)!.palmOilFree, suitable: suitable, icon: Allergies.palm);
   }
   
   
