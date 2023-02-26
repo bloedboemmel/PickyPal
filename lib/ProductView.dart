@@ -51,12 +51,7 @@ class _Product extends State<ProductView> {
 
     UserPreferences userPreferences = Provider.of<UserPreferences>(context);
     late Future<Widget> widget = PieChartProducts(userPreferences, barcode);
-    return MaterialApp(
-      title: 'Fetch Data Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
+    return Scaffold(
         body: FutureBuilder<Widget>(
             future: widget,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -69,9 +64,7 @@ class _Product extends State<ProductView> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ),
-
-      ),
+          )
     );
   }
   Widget productNotFound(){

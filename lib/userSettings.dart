@@ -24,6 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context){
     userPreferences = Provider.of<UserPreferences>(context);
+    // String language = "English";
     return Scaffold(
         appBar: AppBar(
           title: const Text('Settings'),
@@ -34,6 +35,42 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: SettingsList(
             sections: [
+              /*
+              SettingsSection(
+
+                title: const Text("App"),
+                tiles: [
+                  SettingsTile(
+                      leading: const Icon(Icons.language),
+                      title: const Text("Language"),
+                      value: Text(language),
+                      trailing: PopupMenuButton<String>(
+                          initialValue: language,
+                          // Callback that sets the selected popup menu item.
+                          onSelected: (String item) {
+                            setState(() {
+                              language = item;
+                            });
+                          },
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                              const PopupMenuItem<String>(
+                              value: "English",
+                              child: Text('English'),
+                              ),
+                              const PopupMenuItem<String>(
+                              value: "Deutsch",
+                              child: Text('Deutsch'),
+                              ),
+                              const PopupMenuItem<String>(
+                              value: "Bayrisch",
+                              child: Text('Bayrisch'),
+                              ),
+                        ],
+                  )
+                  )
+                ],
+              ),
+               */
               SettingsSection(
                 title: const Text("Common"),
                 tiles: [
@@ -130,14 +167,16 @@ class UserPreferences{
   bool vegetarian;
   bool vegan;
   bool palmOilFree;
+  ThemeMode themeMode;
   UserPreferences({required this.glutenFree,
     required this.lactoseFree,
     required this.nutFree,
     required this.vegan,
     required this.palmOilFree,
-    required this.vegetarian});
+    required this.vegetarian,
+    required this.themeMode});
   factory UserPreferences.empty(){
-    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false, vegan: false, palmOilFree: false, vegetarian: false);
+    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false, vegan: false, palmOilFree: false, vegetarian: false, themeMode:ThemeMode.system);
   }
   void _saveAllergies() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -147,6 +186,7 @@ class UserPreferences{
     await prefs.setBool('vegetarian', vegetarian);
     await prefs.setBool('vegan', vegan);
     await prefs.setBool('palmOilFree', palmOilFree);
+    await prefs.setString('appMode', themeModeToString(themeMode));
   }
 
 
@@ -160,7 +200,32 @@ Future<UserPreferences> PreferencesFromStorage() async {
       nutFree: prefs.getBool('nutFree') ?? false,
       vegan: prefs.getBool('vegan') ?? false,
       palmOilFree: prefs.getBool('palmOilFree') ?? false,
-      vegetarian: prefs.getBool('vegetarian') ?? false);
+      vegetarian: prefs.getBool('vegetarian') ?? false,
+      themeMode: stringToThemeMode(prefs.getString('themeMode')));
+}
+ThemeMode stringToThemeMode(String? theme){
+  if (theme == null){
+    return ThemeMode.system;
+  }
+  if (theme == "dark"){
+    return ThemeMode.dark;
+  }
+  if (theme == "light"){
+    return ThemeMode.light;
+  }
+  return ThemeMode.system;
+}
+String themeModeToString(ThemeMode? theme){
+  if (theme == null){
+    return "system";
+  }
+  if (theme == ThemeMode.dark){
+    return "dark";
+  }
+  if (theme == ThemeMode.light){
+    return "light" ;
+  }
+  return "system";
 }
 
 

@@ -16,8 +16,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const MaterialApp(
-      home: HomeScreen(),
+    return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      home: const HomeScreen(),
     );
   }
 }
@@ -54,7 +57,7 @@ class _HomeScreen extends State<HomeScreen>{
            children: [
              const CamScanner(),
              Positioned(
-               top: 50.0,
+               bottom: 50.0,
                right: 20.0,
                child: Container(
                    decoration: const BoxDecoration(
