@@ -1,4 +1,4 @@
-package com.example.flutter_barcode_3
+package com.pickypal.barcode
 
 import io.flutter.embedding.android.FlutterActivity
 
