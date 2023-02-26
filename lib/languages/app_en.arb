@@ -1,0 +1,51 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+
+  "noProductFound": "Sorry, we couldn't find that product," ,
+  "@noProductFound": {
+    "description": "When there is no product found in the database"
+  },
+  "addProduct": "but you can add the product here!",
+  "@addProduct": {
+    "description": "Blue underlined text with url to database"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings"
+  },
+  "funding": "Funding",
+  "@funding": {
+    "description": "Funding"
+  },
+  "pleaseFund": "Please fund me!",
+  "@pleaseFund": {
+    "description": "Please fund me!"
+  },
+  "vegan": "Vegan",
+  "@vegan": {
+    "description": "Vegan"
+  },
+  "vegetarian": "Vegetarian",
+  "@vegetarian": {
+    "description": "Vegetarian"
+  },
+  "glutenFree": "Gluten Free",
+  "@glutenFree": {
+    "description": "Gluten Free"
+  },
+  "dairyFree": "Dairy Free",
+  "@dairyFree": {
+    "description": "Dairy Free"
+  },
+  "nutFree": "Nut Free",
+  "@nutFree": {
+    "description": "Nut Free"
+  },
+  "palmOilFree": "Palm Oil Free",
+  "@palmOilFree": {
+    "description": "Palm Oil Free"
+  }
+}

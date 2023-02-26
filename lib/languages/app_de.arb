@@ -1,0 +1,15 @@
+{
+  "helloWorld": "Hallo Welt!",
+  "noProductFound": "Wir konnten leider kein Produkt finden,",
+  "addProduct": "aber du kannst das Produkt hier hinzufügen!",
+  "settings": "Einstellungen",
+  "funding": "Finanzierung",
+  "pleaseFund": "Bitte unterstütze mich, indem du die App finanziert.",
+  "vegan": "Vegan",
+  "vegetarian": "Vegetarisch",
+  "glutenFree": "Glutenfrei",
+  "lactoseFree": "Laktosefrei",
+  "nutFree": "Nussfrei",
+  "palmOilFree": "Palmölfrei",
+  "dairyFree": "Milchfrei"
+}
