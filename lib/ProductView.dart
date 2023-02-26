@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:PickyPal/product.dart';
+import 'package:PickyPal/userSettings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_3/ProductChecker.dart';
-import 'package:flutter_barcode_3/product.dart';
-import 'package:flutter_barcode_3/userSettings.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import 'ProductChecker.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
 

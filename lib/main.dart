@@ -1,7 +1,7 @@
+import 'package:PickyPal/userSettings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_3/ScannerScreen.dart';
-import 'package:flutter_barcode_3/userSettings.dart';
 import 'package:provider/provider.dart';
+import 'package:PickyPal/ScannerScreen.dart';
 final globalNavigatorKey = GlobalKey<NavigatorState>();
 void main() => runApp(
     FutureProvider<UserPreferences>(

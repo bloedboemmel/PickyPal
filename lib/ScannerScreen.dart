@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_3/ProductView.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
+
+import 'ProductView.dart';
 
 //apply this class on home: attribute at MaterialApp()
 class CamScanner extends StatefulWidget{

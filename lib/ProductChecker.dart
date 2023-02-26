@@ -1,5 +1,5 @@
+import 'package:PickyPal/product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_3/product.dart';
 class Allergy{
   YESMAYBENO suitable;
   String name;
