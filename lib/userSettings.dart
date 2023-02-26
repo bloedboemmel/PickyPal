@@ -144,8 +144,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     SettingsTile(
                           title:  Text(AppLocalizations.of(context)!.pleaseFund),
                             onPressed: (context) =>() {
-                              const url = 'https://ko-fi.com/bloedboemmel';
-                              launchUrl(Uri.parse(url));
+                              LaunchKofi();
+
                             },
                           leading: const Icon(Icons.coffee),
                           )
@@ -159,6 +159,14 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+}
+Future<void> LaunchKofi() async{
+  const url = 'https://ko-fi.com/bloedboemmel';
+  if (await canLaunchUrl(Uri.parse(url))) {
+  launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  } else {
+  throw 'Could not launch $url';
+  }
 }
 class UserPreferences{
 

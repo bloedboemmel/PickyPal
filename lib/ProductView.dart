@@ -117,7 +117,7 @@ class _Product extends State<ProductView> {
                   onTap: () async {
                     const url = 'https://world.openfoodfacts.org/cgi/product.pl';
                     if (await canLaunchUrl(Uri.parse(url))) {
-                      await launchUrl(Uri.parse(url));
+                      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
                     } else {
                       throw 'Could not launch $url';
                     }
