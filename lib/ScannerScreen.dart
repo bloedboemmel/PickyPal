@@ -5,6 +5,8 @@ import 'ProductView.dart';
 
 //apply this class on home: attribute at MaterialApp()
 class CamScanner extends StatefulWidget{
+  const CamScanner({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _CamScanner(); //create state
@@ -27,7 +29,6 @@ class _CamScanner extends State<CamScanner>{
   }
 
 
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       calledScreenAlready = false;
@@ -39,17 +40,16 @@ class _CamScanner extends State<CamScanner>{
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.topCenter, //inner widget alignment to center
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child:Column(
           children:[
             Container(
-                margin: EdgeInsets.only(top:30),
+                margin: const EdgeInsets.only(top:30),
                 child: SizedBox(
                   width: 300.0,
                   height: 600.0,
                   child: QrCamera(
                     qrCodeCallback: (code) {
-                      print(code);
                       scanresult = code!;
                       if (!calledScreenAlready) {
                         calledScreenAlready = true;
@@ -58,7 +58,7 @@ class _CamScanner extends State<CamScanner>{
                                 ProductView(barcode: code))).then((value) => setState((){calledScreenAlready = false;}));
                       }
                     },
-                    formats: [BarcodeFormats.EAN_13, BarcodeFormats.EAN_8],
+                    formats: const [BarcodeFormats.EAN_13, BarcodeFormats.EAN_8],
 
 
 

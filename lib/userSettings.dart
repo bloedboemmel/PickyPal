@@ -1,9 +1,13 @@
 
+import 'package:PickyPal/Allergy.dart';
 import 'package:flutter/material.dart';
-
+import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -17,16 +21,107 @@ class _SettingsPageState extends State<SettingsPage> {
 
   }
 
-
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+    userPreferences = Provider.of<UserPreferences>(context);
+    return Scaffold(
+      body: SettingsList(
+        sections: [
+          SettingsSection(
+            title: const Text("Common"),
+            tiles: [
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.glutenFree,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.glutenFree = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.glutenfree().name),
+                  leading: Icon(Allergy.glutenfree().icon)
+              ),
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.lactoseFree,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.lactoseFree = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.dairyFree().name),
+                  leading: Icon(Allergy.dairyFree().icon)
+              ),
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.nutFree,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.nutFree = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.nutsFree().name),
+                  leading: Icon(Allergy.nutsFree().icon)
+              ),
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.vegetarian,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.vegetarian = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.vegetarian().name),
+                  leading: Icon(Allergy.vegetarian().icon)
+              ),
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.vegan,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.vegan = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.vegan().name),
+                  leading: Icon(Allergy.vegan().icon)
+              ),
+              SettingsTile.switchTile(
+                  initialValue: userPreferences.palmOilFree,
+                  onToggle: (value) {
+                            setState(() {
+                              userPreferences.palmOilFree = value;
+                              userPreferences._saveAllergies();
+                            });},
+                  title: Text(Allergy.palmOilFree().name),
+                  leading: Icon(Allergy.palmOilFree().icon)
+              )
+             ],
+
+          ),
+          SettingsSection(
+              title: const Text("Funding"),
+              tiles: [
+                SettingsTile(
+                      title: const Text('Please fund me'),
+                        onPressed: (context) =>() {
+                          const url = 'https://ko-fi.com/bloedboemmel';
+                          launchUrl(Uri.parse(url));
+                        },
+                      leading: const Icon(Icons.coffee),
+                      )
+                ],
+          )
+
+
+          
+        ],
+      ),
+    );
+  }
+
+
+  Widget build21(BuildContext context) {
     userPreferences = Provider.of<UserPreferences>(context);
     return Scaffold(
       body: Column(
           children: [
       CheckboxListTile(
-      title: Text('Gluten-free'),
+      title: const Text('Gluten-free'),
       value: userPreferences.glutenFree,
       onChanged: (value) {
         setState(() {
@@ -36,7 +131,7 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     ),
     CheckboxListTile(
-    title: Text('Lactose-free'),
+    title: const Text('Lactose-free'),
     value: userPreferences.lactoseFree,
     onChanged: (value) {
     setState(() {
@@ -46,7 +141,7 @@ class _SettingsPageState extends State<SettingsPage> {
     },
     ),
     CheckboxListTile(
-    title: Text('Nut-free'),
+    title: const Text('Nut-free'),
     value: userPreferences.nutFree,
     onChanged: (value) {
     setState(() {
@@ -56,7 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
     },
     ),
     CheckboxListTile(
-    title: Text('Vegetarian'),
+    title: const Text('Vegetarian'),
     value: userPreferences.vegetarian,
     onChanged: (value) {
     setState(() {
@@ -66,7 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
     },
     ),
     CheckboxListTile(
-    title: Text('Vegan'),
+    title: const Text('Vegan'),
     value: userPreferences.vegan,
     onChanged: (value) {
     setState(() {
@@ -76,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
     },
     ),
     CheckboxListTile(
-    title: Text('Palm oil Free'),
+    title: const Text('Palm oil Free'),
       value: userPreferences.palmOilFree,
       onChanged: (value) {
         setState(() {

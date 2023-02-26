@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'package:PickyPal/product.dart';
 import 'package:PickyPal/userSettings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
-import 'ProductChecker.dart';
+import 'package:PickyPal/Allergy.dart';
+import 'package:url_launcher/url_launcher.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
 
@@ -46,32 +44,7 @@ class _Product extends State<ProductView> {
     super.initState();
   }
 
-  Future<Product> getResult(String barcode) async {
-    YESMAYBENO maybe = YESMAYBENO.maybe;
-    if (barcode == "") {
-      return Product(title: "title",
-          barcode: "barcode",
-          glutenfree: false,
-          lactosefree: false,
-          nutfree: false,
-          vegan: maybe,
-          vegeterian: maybe,
-          palmoilfree: maybe);
-    }
-    String uri = "https://world.openfoodfacts.org/api/v2/product/";
-    final response = await http
-        .get(Uri.parse(uri + barcode));
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return Product.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load product');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,25 +57,94 @@ class _Product extends State<ProductView> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Result'),
-        ),
-        body: Center(
-          child: FutureBuilder<Widget>(
+        body: FutureBuilder<Widget>(
             future: widget,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return snapshot.data;
               } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+                return productNotFound();
               }
 
               // By default, show a loading spinner.
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             },
           ),
-        ),
+
       ),
+    );
+  }
+  Widget productNotFound(){
+    return Stack(
+        children: [
+          Align(
+              child:
+              Stack(
+                alignment: Alignment.center,
+                children:[
+                    Container(
+                        height: MediaQuery.of(context).size.width / 2.5,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2),
+                          child:  Container(
+                              height: MediaQuery.of(context).size.width / 2.5,
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: getColorForYesMaybeNo(YESMAYBENO.maybe)
+                              ),
+                              child: const Center(
+                                    child: Icon(
+                                      Icons.question_mark,
+                                      size: 40
+                                    )
+                              )
+
+                          ),
+                        ),
+                    )
+                ],
+              )
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: MediaQuery.of(context).size.height * 0.2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Sorry, we couldn't find that product.",
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () async {
+                    const url = 'https://world.openfoodfacts.org/cgi/product.pl';
+                    if (await canLaunchUrl(Uri.parse(url))) {
+                      await launchUrl(Uri.parse(url));
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: const Text(
+                    'Help us to get more information here',
+                    style: TextStyle(
+                      fontSize: 18,
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]
     );
   }
 
@@ -110,64 +152,104 @@ class _Product extends State<ProductView> {
     Product product = await getResult(barcode);
     List<Allergy> allergies = await checkAll(userPreferences, product);
     YESMAYBENO suitable = isSuitable(allergies);
-    Map<String, Color> colorMap = {};
-    Map<String, double> dataMap = {};
     List<PieChartSectionData> piechartsections =  List.empty(growable: true);
     for (var allergy in allergies) {
-      colorMap[allergy.name] = allergy.color();
-      dataMap[allergy.name] = 1.0;
       piechartsections.add(PieChartSectionData(
           color: allergy.color(),
           badgeWidget: Icon(allergy.icon)
       ));
 
     }
+    if (allergies.isEmpty){
+      return Stack(
+          children: [
+            Align(
+                child:
+                Stack(
+                  alignment: Alignment.center,
+                  children:[
+                    MiddleWidget(suitable)
+                  ],
+                )
+            ),
+            ProductText(product.title)
+          ]
+      );
+    }
+    else if(allergies.length == 1){
+       return Stack(
+          children: [
+             Align(
+              child:
+                 Stack(
+                 alignment: Alignment.center,
+                   children:[
+                     MiddleWidget(allergies[0].suitable)
+                   ],
+                 )
+             ),
+            ProductText(product.title)
+            ]
+          );
+
+    }
     return Stack(
-      children: [
-        PieChart(
-          PieChartData(sections: piechartsections),
-          swapAnimationDuration: Duration(milliseconds: 150), // Optional
-          swapAnimationCurve: Curves.linear, // Optional
-        ),
-        Center(
-          child: Container(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  MiddleWidget(suitable),
+                  PieChart(
+                    PieChartData(sections: piechartsections, centerSpaceRadius: MediaQuery.of(context).size.width / 5),
+                    swapAnimationDuration: const Duration(milliseconds: 150),
+                  ),
+                ],
+              ),
+            ),
+            ProductText(product.title)
+          ]
+    );
+  }
+  Container MiddleWidget(YESMAYBENO suitable){
+    return Container(
+      height: MediaQuery.of(context).size.width / 2.5,
+      width: MediaQuery.of(context).size.width / 2.5,
+      decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(2),
+        child:  Container(
             height: MediaQuery.of(context).size.width / 2.5,
             width: MediaQuery.of(context).size.width / 2.5,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.black
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(2),
-              child:  Container(
-                height: MediaQuery.of(context).size.width / 2.5,
-                width: MediaQuery.of(context).size.width / 2.5,
-                decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: getColorForYesMaybeNo(suitable)
-                ),
-                child: Center(
-                    child: Icon(
-                      getIconForYesMaybeNo(suitable),
-                      size: 40
-                    )
-                )
-
-              ),
             ),
-          ),
+            child: Center(
+                child: Icon(
+                    getIconForYesMaybeNo(suitable),
+                    size: 40
+                )
+            )
+
         ),
-        /*Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildLegendItem(Icons.nature, 'Gluten Free', allergies['gluten']!),
-            SizedBox(width: 16.0),
-            _buildLegendItem(Icons.spa, 'Vegan', allergies['vegan']!),
-            SizedBox(width: 16.0),
-            _buildLegendItem(Icons.local_dining, 'Dairy Free', allergies['dairy']!),
-          ],
-        ),*/
-      ],
+      ),
+    );
+  }
+  Positioned ProductText(String text){
+    return  Positioned(
+        left: 0,
+        right: 0,
+        bottom: MediaQuery.of(context).size.height * 0.2,
+        child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 20)),
     );
   }
   YESMAYBENO isSuitable(List<Allergy> allergies){
@@ -189,22 +271,22 @@ class _Product extends State<ProductView> {
   Future<List<Allergy>> checkAll(UserPreferences userPreferences, Product product) async {
     List<Allergy> allergies = List.empty(growable: true);
     if(userPreferences.glutenFree){
-      allergies.add(Allergy(name: "Glutenfree", suitable: isGlutenFree(product), icon: Icons.local_pizza)) ;
+      allergies.add(Allergy.glutenfree(suitable: isGlutenFree(product)));
     }
     if(userPreferences.lactoseFree){
-      allergies.add(Allergy(name: "Lactosefree", suitable: isLactoseFree(product), icon:Icons.local_drink )) ;
+      allergies.add(Allergy.dairyFree(suitable: isLactoseFree(product)));
     }
     if(userPreferences.nutFree){
-      allergies.add(Allergy(name: "Nutfree", suitable: isNutFree(product), icon: Icons.do_not_disturb_on)) ;
+      allergies.add(Allergy.nutsFree(suitable: isNutFree(product))) ;
     }
     if(userPreferences.vegetarian){
-      allergies.add(Allergy(name: "Vegetarian", suitable: isVegetarian(product), icon: Icons.eco)) ;
+      allergies.add(Allergy.vegetarian(suitable: isVegetarian(product))) ;
     }
     if(userPreferences.vegan){
-      allergies.add(Allergy(name: "Vegan", suitable: isVegan(product), icon: Icons.grass_outlined)) ;
+      allergies.add(Allergy.vegan(suitable: isVegan(product)));
     }
     if(userPreferences.palmOilFree){
-      allergies.add(Allergy(name: "PalmOilFree", suitable: isPalmOilFree(product), icon: Icons.not_interested)) ;
+      allergies.add(Allergy.palmOilFree(suitable: isPalmOilFree(product)));
     }
     return allergies;
   }
