@@ -18,6 +18,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   cupertino_icons: ^1.0.2
   http: 0.13.5
   shared_preferences: ^2.0.5
@@ -33,6 +36,7 @@ dependencies:
   url_launcher: ^6.0.3
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -40,6 +44,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 flutter_icons:
   android: "launcher_icon"
   ios: true

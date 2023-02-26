@@ -5,6 +5,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -81,8 +82,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.glutenFree = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.glutenfree().name),
-                      leading: Icon(Allergy.glutenfree().icon)
+                      title: Text(Allergy.glutenfree(context: context).name),
+                      leading: Icon(Allergy.glutenfree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.lactoseFree,
@@ -91,8 +92,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.lactoseFree = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.dairyFree().name),
-                      leading: Icon(Allergy.dairyFree().icon)
+                      title: Text(Allergy.dairyFree(context: context).name),
+                      leading: Icon(Allergy.dairyFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.nutFree,
@@ -101,8 +102,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.nutFree = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.nutsFree().name),
-                      leading: Icon(Allergy.nutsFree().icon)
+                      title: Text(Allergy.nutsFree(context: context).name),
+                      leading: Icon(Allergy.nutsFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.vegetarian,
@@ -111,8 +112,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.vegetarian = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.vegetarian().name),
-                      leading: Icon(Allergy.vegetarian().icon)
+                      title: Text(Allergy.vegetarian(context: context).name),
+                      leading: Icon(Allergy.vegetarian(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.vegan,
@@ -121,8 +122,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.vegan = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.vegan().name),
-                      leading: Icon(Allergy.vegan().icon)
+                      title: Text(Allergy.vegan(context: context).name),
+                      leading: Icon(Allergy.vegan(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.palmOilFree,
@@ -131,17 +132,17 @@ class _SettingsPageState extends State<SettingsPage> {
                                   userPreferences.palmOilFree = value;
                                   userPreferences._saveAllergies();
                                 });},
-                      title: Text(Allergy.palmOilFree().name),
-                      leading: Icon(Allergy.palmOilFree().icon)
+                      title: Text(Allergy.palmOilFree(context: context).name),
+                      leading: Icon(Allergy.palmOilFree(context: context).icon)
                   )
                  ],
 
               ),
               SettingsSection(
-                  title: const Text("Funding"),
+                  title: Text(AppLocalizations.of(context)!.funding),
                   tiles: [
                     SettingsTile(
-                          title: const Text('Please fund me'),
+                          title:  Text(AppLocalizations.of(context)!.pleaseFund),
                             onPressed: (context) =>() {
                               const url = 'https://ko-fi.com/bloedboemmel';
                               launchUrl(Uri.parse(url));

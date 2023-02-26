@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:PickyPal/Allergy.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProductViewClass extends StatelessWidget {
   final String barcode;
 
@@ -14,11 +15,7 @@ class ProductViewClass extends StatelessWidget {
   }) :super(key: key);
   @override
   Widget build(BuildContext context) {
-
-
-    return  MaterialApp(
-      home: ProductView(barcode: barcode),
-    );
+    return ProductView(barcode: barcode);
   }
 }
 //apply this class on home: attribute at MaterialApp()
@@ -58,7 +55,7 @@ class _Product extends State<ProductView> {
               if (snapshot.hasData) {
                 return snapshot.data;
               } else if (snapshot.hasError) {
-                return productNotFound();
+                return productNotFound(context);
               }
 
               // By default, show a loading spinner.
@@ -67,7 +64,7 @@ class _Product extends State<ProductView> {
           )
     );
   }
-  Widget productNotFound(){
+  Widget productNotFound(BuildContext context){
     return Stack(
         children: [
           Align(
@@ -111,9 +108,9 @@ class _Product extends State<ProductView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Sorry, we couldn't find that product.",
-                  style: TextStyle(fontSize: 18),
+                Text(
+                  AppLocalizations.of(context)!.noProductFound,
+                  style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
@@ -125,9 +122,9 @@ class _Product extends State<ProductView> {
                       throw 'Could not launch $url';
                     }
                   },
-                  child: const Text(
-                    'Help us to get more information here',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.addProduct,
+                    style: const TextStyle(
                       fontSize: 18,
                       decoration: TextDecoration.underline,
                       color: Colors.blue,
@@ -264,22 +261,22 @@ class _Product extends State<ProductView> {
   Future<List<Allergy>> checkAll(UserPreferences userPreferences, Product product) async {
     List<Allergy> allergies = List.empty(growable: true);
     if(userPreferences.glutenFree){
-      allergies.add(Allergy.glutenfree(suitable: isGlutenFree(product)));
+      allergies.add(Allergy.glutenfree(context: context, suitable: isGlutenFree(product)));
     }
     if(userPreferences.lactoseFree){
-      allergies.add(Allergy.dairyFree(suitable: isLactoseFree(product)));
+      allergies.add(Allergy.dairyFree(context: context,suitable: isLactoseFree(product)));
     }
     if(userPreferences.nutFree){
-      allergies.add(Allergy.nutsFree(suitable: isNutFree(product))) ;
+      allergies.add(Allergy.nutsFree(context: context,suitable: isNutFree(product))) ;
     }
     if(userPreferences.vegetarian){
-      allergies.add(Allergy.vegetarian(suitable: isVegetarian(product))) ;
+      allergies.add(Allergy.vegetarian(context: context,suitable: isVegetarian(product))) ;
     }
     if(userPreferences.vegan){
-      allergies.add(Allergy.vegan(suitable: isVegan(product)));
+      allergies.add(Allergy.vegan(context: context,suitable: isVegan(product)));
     }
     if(userPreferences.palmOilFree){
-      allergies.add(Allergy.palmOilFree(suitable: isPalmOilFree(product)));
+      allergies.add(Allergy.palmOilFree(context: context, suitable: isPalmOilFree(product)));
     }
     return allergies;
   }
