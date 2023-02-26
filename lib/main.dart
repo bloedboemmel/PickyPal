@@ -34,9 +34,8 @@ class HomeScreen extends StatefulWidget{
 }
 
 class _HomeScreen extends State<HomeScreen>{
-  late String scanresult; //varaible for scan result text
+  late String scanresult;
   bool calledScreenAlready = false;
-  int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -49,47 +48,33 @@ class _HomeScreen extends State<HomeScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: Scaffold(
-                    appBar: AppBar(
-                        title:const Text("Is it ok?"),
-                        backgroundColor: Colors.redAccent
+    return
+      Scaffold(
+         body: Stack(
+           children: [
+             const CamScanner(),
+             Positioned(
+               top: 50.0,
+               right: 20.0,
+               child: Container(
+                   decoration: const BoxDecoration(
+                         shape: BoxShape.circle,
+                         color: Colors.blue,
                     ),
-                    body: _selectedIndex == 0 ? const CamScanner(): SettingsPage(),
-                    bottomNavigationBar: BottomNavigationBar(
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.camera),
-                          label: 'Camera',
+                   child:IconButton(
+                         icon: const Icon(Icons.settings),
+                         onPressed: () {
+                           Navigator.push(context,
+                               MaterialPageRoute(builder: (context) =>const SettingsPage()));// navigate to the settings page
+                         },
+                   )
+               ),
+             )
+           ],
+         )
+         ,
+      );
 
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.settings),
-                          label: 'Settings',
-                        ),
-                      ],
-                      currentIndex: _selectedIndex, //New
-                      onTap: _onItemTapped,
-                    ),
-                  ),
-        onWillPop: ()async{
-          if(_selectedIndex == 0){
-            return true;
-          }
-          else{
-            setState(() {
-              _selectedIndex = 0;
-            });
-
-            return false;
-          }
-          }
-        );
-  }
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 }
 
