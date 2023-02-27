@@ -78,7 +78,8 @@ class _HomeScreen extends State<HomeScreen>{
                          icon: const Icon(Icons.settings),
                          onPressed: () {
                            Navigator.push(context,
-                               MaterialPageRoute(builder: (context) =>const SettingsPage()));// navigate to the settings page
+                               MaterialPageRoute(builder: (context) =>const SettingsPage()));
+
                          },
                    )
                ),

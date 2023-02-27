@@ -18,6 +18,7 @@ class CamScanner extends StatefulWidget{
 class _CamScanner extends State<CamScanner> {
   late String scanresult;
   bool calledScreenAlready = false;
+  List<String> barcodes = List.empty(growable: true);
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _CamScanner extends State<CamScanner> {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       calledScreenAlready = false;
+      barcodes.clear();
     }
   }
 
@@ -48,15 +50,28 @@ class _CamScanner extends State<CamScanner> {
         QrCamera(
         qrCodeCallback: (code) {
           scanresult = code!;
-          if (!calledScreenAlready) {
-            calledScreenAlready = true;
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) =>
-                    ProductView(barcode: code))).then((value) =>
-                setState(() {
-                  calledScreenAlready = false;
-                }));
+          if(barcodes.length == 2){
+            if(barcodes[0] == scanresult && barcodes[1]==scanresult){
+              if (!calledScreenAlready) {
+                calledScreenAlready = true;
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                        ProductView(barcode: code))).then((value) =>
+                    setState(() {
+                      calledScreenAlready = false;
+                    }));
+              }
+            }
+            else{
+              barcodes.removeAt(0);
+              barcodes.add(scanresult);
+            }
           }
+          else{
+            barcodes.add(scanresult);
+          }
+
+
         },
         formats: const [BarcodeFormats.EAN_13, BarcodeFormats.EAN_8],
         ),
