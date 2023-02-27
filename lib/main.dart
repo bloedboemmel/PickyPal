@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(primaryColor: Colors.white),
+      darkTheme: ThemeData.dark().copyWith(primaryColor: Colors.black26),
       themeMode: ThemeMode.system,
       localizationsDelegates: const [
         AppLocalizations.delegate,
