@@ -1,4 +1,27 @@
-# Pickypal
+# PickyPal
+Welcome to the PickyPal GitHub repo!
+
+PickyPal is a convenient and easy-to-use food scanning app that allows you to scan any barcode and instantly see if the product is suitable for your dietary needs. Whether you have allergies to gluten, nuts, soy, or lactose, or you follow a vegetarian, vegan, or palm-oil-free diet, PickyPal has got you covered.
+
+## Screenshots
+<img src=".github/images/PickyPal1.png" width="200"> <img src=".github/images/PickyPal2.png" width="200"> <img src=".github/images/PickyPal3.png" width="200"> <img src=".github/images/PickyPal4.png" width="200"> <img src=".github/images/PickyPal5.png" width="200"> 
+
+
+## Getting Started
+To get started, simply clone the repo and follow the instructions in the README file. We recommend using the latest version of Android Studio to build and run the app.
+
+## Contributions
+We're always working to improve the app and make it more useful for our users, so we welcome contributions from the community. If you're interested in contributing to the project, please follow the standard Git workflow:
+
+1. Fork the repo
+2. Create a new branch for your changes
+3. Make your changes and commit them
+4. Push your changes to your fork
+5. Create a pull request to the main repo
+
+## Issues
+If you encounter any issues or have any questions, please don't hesitate to open an issue on the repo. We're always happy to help and appreciate any feedback that can help us improve the app.
+
 
 ## Add a new allergy
 ### Generate icon
@@ -35,6 +58,8 @@
    * Add the allergy to the language strings in "lib/languages/app_de.arb"
    * Run `flutter gen-l10n` to generate the new language strings
    * Check "lib/languages/untranslated.txt" for missing translations
+
+
 
 
 
