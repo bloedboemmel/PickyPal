@@ -1,5 +1,6 @@
 
 import 'package:PickyPal/Allergy.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,42 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: SettingsList(
             sections: [
-              /*
-              SettingsSection(
-
-                title: const Text("App"),
-                tiles: [
-                  SettingsTile(
-                      leading: const Icon(Icons.language),
-                      title: const Text("Language"),
-                      value: Text(language),
-                      trailing: PopupMenuButton<String>(
-                          initialValue: language,
-                          // Callback that sets the selected popup menu item.
-                          onSelected: (String item) {
-                            setState(() {
-                              language = item;
-                            });
-                          },
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                              value: "English",
-                              child: Text('English'),
-                              ),
-                              const PopupMenuItem<String>(
-                              value: "Deutsch",
-                              child: Text('Deutsch'),
-                              ),
-                              const PopupMenuItem<String>(
-                              value: "Bayrisch",
-                              child: Text('Bayrisch'),
-                              ),
-                        ],
-                  )
-                  )
-                ],
-              ),
-               */
               SettingsSection(
                 title: const Text("Common"),
                 tiles: [
@@ -134,6 +99,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                 });},
                       title: Text(Allergy.palmOilFree(context: context).name),
                       leading: Icon(Allergy.palmOilFree(context: context).icon)
+                  ),
+                  SettingsTile.switchTile(
+                      initialValue: userPreferences.soyFree,
+                      onToggle: (value) {
+                        setState(() {
+                          userPreferences.soyFree = value;
+                          userPreferences._saveAllergies();
+                        });},
+                      title: Text(Allergy.soyFree(context: context).name),
+                      leading: Icon(Allergy.soyFree(context: context).icon)
                   )
                  ],
 
@@ -143,8 +118,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   tiles: [
                     SettingsTile(
                           title:  Text(AppLocalizations.of(context)!.pleaseFund),
-                            onPressed: (context) =>() {
-                              LaunchKofi();
+                            onPressed: (BuildContext context) {
+                                const url = 'https://ko-fi.com/bloedboemmel';
+                                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
 
                             },
                           leading: const Icon(Icons.coffee),
@@ -160,14 +136,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
 }
-Future<void> LaunchKofi() async{
-  const url = 'https://ko-fi.com/bloedboemmel';
-  if (await canLaunchUrl(Uri.parse(url))) {
-  launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-  } else {
-  throw 'Could not launch $url';
-  }
-}
 class UserPreferences{
 
   bool glutenFree;
@@ -176,6 +144,7 @@ class UserPreferences{
   bool vegetarian;
   bool vegan;
   bool palmOilFree;
+  bool soyFree;
   ThemeMode themeMode;
   UserPreferences({required this.glutenFree,
     required this.lactoseFree,
@@ -183,9 +152,10 @@ class UserPreferences{
     required this.vegan,
     required this.palmOilFree,
     required this.vegetarian,
+    required this.soyFree,
     required this.themeMode});
   factory UserPreferences.empty(){
-    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false, vegan: false, palmOilFree: false, vegetarian: false, themeMode:ThemeMode.system);
+    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false, vegan: false, palmOilFree: false, vegetarian: false, soyFree: false,themeMode:ThemeMode.system);
   }
   void _saveAllergies() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -195,6 +165,7 @@ class UserPreferences{
     await prefs.setBool('vegetarian', vegetarian);
     await prefs.setBool('vegan', vegan);
     await prefs.setBool('palmOilFree', palmOilFree);
+    await prefs.setBool('soyFree', soyFree);
     await prefs.setString('appMode', themeModeToString(themeMode));
   }
 
@@ -210,6 +181,7 @@ Future<UserPreferences> PreferencesFromStorage() async {
       vegan: prefs.getBool('vegan') ?? false,
       palmOilFree: prefs.getBool('palmOilFree') ?? false,
       vegetarian: prefs.getBool('vegetarian') ?? false,
+      soyFree: prefs.getBool('soyFree') ?? false,
       themeMode: stringToThemeMode(prefs.getString('themeMode')));
 }
 ThemeMode stringToThemeMode(String? theme){

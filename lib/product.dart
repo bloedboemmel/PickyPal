@@ -20,11 +20,11 @@ YESMAYBENO suitableFor(List<dynamic> list, String str){
   return YESMAYBENO.maybe;
 
 }
-YESMAYBENO ispalmoilfree(List<dynamic> list){
-  if(list.contains("en:palm-oil-free")){
+YESMAYBENO ispalmoilfree(List<dynamic> list, {int ingredientsMaybeFromPalmOil = 0, int ingredientsFromPalmOil = 0}){
+  if(list.contains("en:palm-oil-free") || ((ingredientsFromPalmOil == 0 && ingredientsMaybeFromPalmOil == 0))){
     return YESMAYBENO.yes;
   }
-  if(list.contains("en:palm-oil")){
+  if(list.contains("en:palm-oil") || (ingredientsMaybeFromPalmOil != 0)){
     return YESMAYBENO.no;
   }
   return YESMAYBENO.maybe;
@@ -39,11 +39,12 @@ Future<Product> getResult(String barcode) async {
         nutfree: false,
         vegan: maybe,
         vegeterian: maybe,
-        palmoilfree: maybe);
+        palmoilfree: maybe,
+        soyfree: false);
   }
   String uri = "https://world.openfoodfacts.org/api/v2/product/";
   // https://world.openfoodfacts.org/api/v2/product/4008452027602?fields=allergens,generic_name,labels,ingredients_analysis_tags
-  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients";
+  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients,ingredients_from_or_that_may_be_from_palm_oil_n,ingredients_from_palm_oil_n";
   final response = await http
       .get(Uri.parse(uri + barcode + tags));
 
@@ -63,29 +64,35 @@ class Product {
   bool glutenfree = false;
   bool lactosefree = false;
   bool nutfree = false;
+  bool soyfree = false;
   YESMAYBENO vegan = YESMAYBENO.maybe;
   YESMAYBENO vegeterian =   YESMAYBENO.maybe;
   YESMAYBENO palmoilfree = YESMAYBENO.maybe;
   Product({required this.title, required this.barcode, required this.glutenfree,
-    required this.lactosefree, required this.nutfree, required this.vegan, required this.vegeterian, required this.palmoilfree
+    required this.lactosefree, required this.nutfree, required this.vegan,
+    required this.vegeterian, required this.palmoilfree, required this.soyfree
   });
   bool isAllFree(){
     return nutfree && glutenfree && lactosefree;
 
   }
   factory Product.fromJson(Map<String, dynamic> json) {
-    String allergens = json['product']['allergens'] + ', ' + json['product']['allergens_from_ingredients'];
+    String allergens = json['product']['allergens'] + ', ' +
+        json['product']['allergens_from_ingredients'];
     List<dynamic> list = json['product']["ingredients_analysis_tags"];
 
     return Product(
-      title: json['product']['product_name'],
-      barcode: json['code'],
-      glutenfree: !allergens.contains('gluten'),
-      nutfree: !allergens.contains('peanuts'),
-      lactosefree: !allergens.contains('milk'),
-      vegan: suitableFor(list, "vegan"),
-      vegeterian: suitableFor(list, "vegetarian"),
-      palmoilfree: ispalmoilfree(list)
+        title: json['product']['product_name'],
+        barcode: json['code'],
+        glutenfree: !allergens.contains('gluten'),
+        nutfree: !allergens.contains('peanuts'),
+        lactosefree: !allergens.contains('milk'),
+        vegan: suitableFor(list, "vegan"),
+        vegeterian: suitableFor(list, "vegetarian"),
+        palmoilfree: ispalmoilfree(list,
+            ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'],
+            ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n']),
+        soyfree: !allergens.contains("soy")
 
 
     );

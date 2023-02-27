@@ -27,4 +27,5 @@ class Allergies {
   static const IconData nut = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData palm = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData vegan = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData soy = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

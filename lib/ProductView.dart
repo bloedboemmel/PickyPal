@@ -278,6 +278,9 @@ class _Product extends State<ProductView> {
     if(userPreferences.palmOilFree){
       allergies.add(Allergy.palmOilFree(context: context, suitable: isPalmOilFree(product)));
     }
+    if(userPreferences.soyFree){
+      allergies.add(Allergy.soyFree(context: context, suitable: isSoyFree(product)));
+    }
     return allergies;
   }
   YESMAYBENO isGlutenFree(Product product) {
@@ -303,5 +306,8 @@ class _Product extends State<ProductView> {
   }
   YESMAYBENO isPalmOilFree(Product product) {
     return product.palmoilfree;
+  }
+  YESMAYBENO isSoyFree(Product product){
+    return product.soyfree ? YESMAYBENO.yes : YESMAYBENO.no;
   }
 }

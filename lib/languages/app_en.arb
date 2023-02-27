@@ -47,5 +47,9 @@
   "palmOilFree": "Palm Oil Free",
   "@palmOilFree": {
     "description": "Palm Oil Free"
+  },
+  "soyFree": "Soy Free",
+  "@soyFree": {
+    "description": "Soy Free"
   }
 }

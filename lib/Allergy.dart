@@ -25,6 +25,9 @@ class Allergy{
   factory Allergy.palmOilFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
     return Allergy(name: AppLocalizations.of(context)!.palmOilFree, suitable: suitable, icon: Allergies.palm);
   }
+  factory Allergy.soyFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
+    return Allergy(name: AppLocalizations.of(context)!.soyFree, suitable: suitable, icon: Allergies.soy);
+  }
   
   
   color()=> getColorForYesMaybeNo(suitable);
