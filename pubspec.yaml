@@ -1,6 +1,6 @@
 name: PickyPal
 description: >-
-  Yippieh, it's here! The scanner, which shows u, if your food is good or not for your allergies!
+  Yippieh, it's here! The scanner, which shows u, if your food is good or not for your allergies and other food preferences!
 homepage: https://jakob-jung.com
 funding: -https://ko-fi.com/bloedboemmel
 issue_tracker: https://github.com/bloedboemmel/PickyPal/issues
@@ -44,9 +44,9 @@ flutter:
   uses-material-design: true
   generate: true
   fonts:
-    - family: Allergies
+    - family: FoodIcons
       fonts:
-        - asset: fonts/Allergies.ttf
+        - asset: lib/assets/fonts/FoodIcons.ttf
 flutter_icons:
   android: "launcher_icon"
   ios: true

@@ -3,7 +3,7 @@ import 'package:PickyPal/userSettings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:PickyPal/Allergy.dart';
+import 'package:PickyPal/FoodPreference.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProductViewClass extends StatelessWidget {
@@ -140,17 +140,17 @@ class _Product extends State<ProductView> {
 
   Future<Widget> PieChartProducts(UserPreferences userPreferences, String barcode) async {
     Product product = await getResult(barcode);
-    List<Allergy> allergies = await checkAll(userPreferences, product);
-    YESMAYBENO suitable = isSuitable(allergies);
+    List<FoodPreference> foodPrefs = await checkAll(userPreferences, product);
+    YESMAYBENO suitable = isSuitable(foodPrefs);
     List<PieChartSectionData> piechartsections =  List.empty(growable: true);
-    for (var allergy in allergies) {
+    for (var foodPref in foodPrefs) {
       piechartsections.add(PieChartSectionData(
-          color: allergy.color(),
-          badgeWidget: Icon(allergy.icon)
+          color: foodPref.color(),
+          badgeWidget: Icon(foodPref.icon)
       ));
 
     }
-    if (allergies.isEmpty){
+    if (foodPrefs.isEmpty){
       return Stack(
           children: [
             Align(
@@ -166,7 +166,7 @@ class _Product extends State<ProductView> {
           ]
       );
     }
-    else if(allergies.length == 1){
+    else if(foodPrefs.length == 1){
        return Stack(
           children: [
              Align(
@@ -174,7 +174,7 @@ class _Product extends State<ProductView> {
                  Stack(
                  alignment: Alignment.center,
                    children:[
-                     MiddleWidget(allergies[0].suitable)
+                     MiddleWidget(foodPrefs[0].suitable)
                    ],
                  )
              ),
@@ -242,49 +242,49 @@ class _Product extends State<ProductView> {
             style: const TextStyle(fontSize: 20)),
     );
   }
-  YESMAYBENO isSuitable(List<Allergy> allergies){
-    //If one of the allergies is no, the product is not suitable
-    for (Allergy allergy in allergies) {
-      if (allergy.suitable == YESMAYBENO.no) {
+  YESMAYBENO isSuitable(List<FoodPreference> foodPrefs){
+    //If one of the foodPrefs is no, the product is not suitable
+    for (FoodPreference foodPref in foodPrefs) {
+      if (foodPref.suitable == YESMAYBENO.no) {
         return YESMAYBENO.no;
       }
     }
-    //If one of the allergies is maybe, the product is maybe suitable
-    for (Allergy allergy in allergies) {
-      if (allergy.suitable == YESMAYBENO.maybe) {
+    //If one of the foodPrefs is maybe, the product is maybe suitable
+    for (FoodPreference foodPref in foodPrefs) {
+      if (foodPref.suitable == YESMAYBENO.maybe) {
         return YESMAYBENO.maybe;
       }
     }
-    //If all of the allergies are yes, the product is suitable
+    //If all of the foodPrefs are yes, the product is suitable
     return YESMAYBENO.yes;
   }
-  Future<List<Allergy>> checkAll(UserPreferences userPreferences, Product product) async {
-    List<Allergy> allergies = List.empty(growable: true);
+  Future<List<FoodPreference>> checkAll(UserPreferences userPreferences, Product product) async {
+    List<FoodPreference> foodPrefs = List.empty(growable: true);
     if(userPreferences.glutenFree){
-      allergies.add(Allergy.glutenfree(context: context, suitable: isGlutenFree(product)));
+      foodPrefs.add(FoodPreference.glutenfree(context: context, suitable: isGlutenFree(product)));
     }
     if(userPreferences.lactoseFree){
-      allergies.add(Allergy.dairyFree(context: context,suitable: isLactoseFree(product)));
+      foodPrefs.add(FoodPreference.dairyFree(context: context,suitable: isLactoseFree(product)));
     }
     if(userPreferences.nutFree){
-      allergies.add(Allergy.nutsFree(context: context,suitable: isNutFree(product))) ;
+      foodPrefs.add(FoodPreference.nutsFree(context: context,suitable: isNutFree(product))) ;
     }
     if(userPreferences.vegetarian){
-      allergies.add(Allergy.vegetarian(context: context,suitable: isVegetarian(product))) ;
+      foodPrefs.add(FoodPreference.vegetarian(context: context,suitable: isVegetarian(product))) ;
     }
     if(userPreferences.vegan){
-      allergies.add(Allergy.vegan(context: context,suitable: isVegan(product)));
+      foodPrefs.add(FoodPreference.vegan(context: context,suitable: isVegan(product)));
     }
     if(userPreferences.palmOilFree){
-      allergies.add(Allergy.palmOilFree(context: context, suitable: isPalmOilFree(product)));
+      foodPrefs.add(FoodPreference.palmOilFree(context: context, suitable: isPalmOilFree(product)));
     }
     if(userPreferences.soyFree){
-      allergies.add(Allergy.soyFree(context: context, suitable: isSoyFree(product)));
+      foodPrefs.add(FoodPreference.soyFree(context: context, suitable: isSoyFree(product)));
     }
     if(userPreferences.glutamateFree){
-      allergies.add(Allergy.glutamateFree(context: context, suitable: isGlutamateFree(product)));
+      foodPrefs.add(FoodPreference.glutamateFree(context: context, suitable: isGlutamateFree(product)));
     }
-    return allergies;
+    return foodPrefs;
   }
   YESMAYBENO isGlutenFree(Product product) {
     return product.glutenfree ? YESMAYBENO.yes : YESMAYBENO.no;
