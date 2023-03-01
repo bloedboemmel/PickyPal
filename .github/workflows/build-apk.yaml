@@ -65,6 +65,6 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SECRET }}
           packageName: com.pickypal.android
-          releaseFiles: app/outputs/bundle/release/app-release.aab
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
           track: production
           whatsNewDirectory: distribution/whatsnew
