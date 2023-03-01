@@ -40,11 +40,13 @@ Future<Product> getResult(String barcode) async {
         vegan: maybe,
         vegeterian: maybe,
         palmoilfree: maybe,
-        soyfree: false);
+        soyfree: false,
+        glutamatefree: false
+    );
   }
   String uri = "https://world.openfoodfacts.org/api/v2/product/";
   // https://world.openfoodfacts.org/api/v2/product/4008452027602?fields=allergens,generic_name,labels,ingredients_analysis_tags
-  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients,ingredients_from_or_that_may_be_from_palm_oil_n,ingredients_from_palm_oil_n";
+  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients,ingredients_from_or_that_may_be_from_palm_oil_n,ingredients_from_palm_oil_n,ingredients";
   final response = await http
       .get(Uri.parse(uri + barcode + tags));
 
@@ -65,22 +67,33 @@ class Product {
   bool lactosefree = false;
   bool nutfree = false;
   bool soyfree = false;
+  bool glutamatefree = false;
   YESMAYBENO vegan = YESMAYBENO.maybe;
   YESMAYBENO vegeterian =   YESMAYBENO.maybe;
   YESMAYBENO palmoilfree = YESMAYBENO.maybe;
   Product({required this.title, required this.barcode, required this.glutenfree,
     required this.lactosefree, required this.nutfree, required this.vegan,
-    required this.vegeterian, required this.palmoilfree, required this.soyfree
+    required this.vegeterian, required this.palmoilfree, required this.soyfree, 
+    required this.glutamatefree
   });
   bool isAllFree(){
     return nutfree && glutenfree && lactosefree;
 
   }
+  bool containsGlutamate(List<Map> list){
+    for (Map m in list){
+      if(m["id"].containts("glutamat")){
+        return true;
+      }
+
+    }
+    return false;
+  }
   factory Product.fromJson(Map<String, dynamic> json) {
     String allergens = json['product']['allergens'] + ', ' +
         json['product']['allergens_from_ingredients'];
     List<dynamic> list = json['product']["ingredients_analysis_tags"];
-
+    List<dynamic> ingredients = json['product']['ingredients'];
     return Product(
         title: json['product']['product_name'],
         barcode: json['code'],
@@ -92,7 +105,8 @@ class Product {
         palmoilfree: ispalmoilfree(list,
             ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'],
             ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n']),
-        soyfree: !allergens.contains("soy")
+        soyfree: !allergens.contains("soy"),
+        glutamatefree: !ingredients.any((element) => element.values.contains("glutamat"))
 
 
     );

@@ -109,6 +109,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         });},
                       title: Text(Allergy.soyFree(context: context).name),
                       leading: Icon(Allergy.soyFree(context: context).icon)
+                  ),
+                  SettingsTile.switchTile(
+                      initialValue: userPreferences.glutamateFree,
+                      onToggle: (value) {
+                        setState(() {
+                          userPreferences.glutamateFree = value;
+                          userPreferences._saveAllergies();
+                        });},
+                      title: Text(Allergy.glutamateFree(context: context).name),
+                      leading: Icon(Allergy.glutamateFree(context: context).icon)
                   )
                  ],
 
@@ -145,6 +155,7 @@ class UserPreferences{
   bool vegan;
   bool palmOilFree;
   bool soyFree;
+  bool glutamateFree;
   ThemeMode themeMode;
   UserPreferences({required this.glutenFree,
     required this.lactoseFree,
@@ -153,9 +164,12 @@ class UserPreferences{
     required this.palmOilFree,
     required this.vegetarian,
     required this.soyFree,
+    required this.glutamateFree,
     required this.themeMode});
   factory UserPreferences.empty(){
-    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false, vegan: false, palmOilFree: false, vegetarian: false, soyFree: false,themeMode:ThemeMode.system);
+    return UserPreferences(glutenFree: false, lactoseFree: false, nutFree: false,
+        vegan: false, palmOilFree: false, vegetarian: false, soyFree: false,
+        glutamateFree: false,themeMode:ThemeMode.system);
   }
   void _saveAllergies() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -166,6 +180,7 @@ class UserPreferences{
     await prefs.setBool('vegan', vegan);
     await prefs.setBool('palmOilFree', palmOilFree);
     await prefs.setBool('soyFree', soyFree);
+    await prefs.setBool('glutamateFree', glutamateFree);
     await prefs.setString('appMode', themeModeToString(themeMode));
   }
 
@@ -182,6 +197,7 @@ Future<UserPreferences> PreferencesFromStorage() async {
       palmOilFree: prefs.getBool('palmOilFree') ?? false,
       vegetarian: prefs.getBool('vegetarian') ?? false,
       soyFree: prefs.getBool('soyFree') ?? false,
+      glutamateFree: prefs.getBool('glutamateFree') ?? false,
       themeMode: stringToThemeMode(prefs.getString('themeMode')));
 }
 ThemeMode stringToThemeMode(String? theme){

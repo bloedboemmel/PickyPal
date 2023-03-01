@@ -51,5 +51,9 @@
   "soyFree": "Soy Free",
   "@soyFree": {
     "description": "Soy Free"
+  },
+  "glutamateFree": "Glutamate Free",
+  "@glutamateFree": {
+    "description": "Glutamate Free"
   }
 }
