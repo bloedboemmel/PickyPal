@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'ProductView.dart';
 
 //apply this class on home: attribute at MaterialApp()
@@ -73,7 +73,22 @@ class _CamScanner extends State<CamScanner> {
 
 
         },
-        formats: const [BarcodeFormats.EAN_13, BarcodeFormats.EAN_8],
+        formats: const [BarcodeFormats.EAN_13, BarcodeFormats.EAN_8], 
+        onError: (BuildContext context, Object? error){
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: FractionallySizedBox(
+                widthFactor: 0.8, // Set the width of the column to 80% of the screen width
+                heightFactor: 0.3, //
+                child: Column(
+                      children: [
+                        const Icon(Icons.no_flash, size: 40),
+                        Container(height: 20),
+                        Text(AppLocalizations.of(context)!.cameraNotWorking)
+                      ])
+            ),
+          );
+        },
         ),
           Positioned.fill(
             child: Align(
