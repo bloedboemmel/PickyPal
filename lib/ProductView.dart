@@ -281,6 +281,9 @@ class _Product extends State<ProductView> {
     if(userPreferences.soyFree){
       allergies.add(Allergy.soyFree(context: context, suitable: isSoyFree(product)));
     }
+    if(userPreferences.glutamateFree){
+      allergies.add(Allergy.glutamateFree(context: context, suitable: isGlutamateFree(product)));
+    }
     return allergies;
   }
   YESMAYBENO isGlutenFree(Product product) {
@@ -309,5 +312,8 @@ class _Product extends State<ProductView> {
   }
   YESMAYBENO isSoyFree(Product product){
     return product.soyfree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isGlutamateFree(Product product){
+    return product.glutamatefree ? YESMAYBENO.yes : YESMAYBENO.no;
   }
 }

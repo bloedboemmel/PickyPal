@@ -28,7 +28,10 @@ class Allergy{
   factory Allergy.soyFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
     return Allergy(name: AppLocalizations.of(context)!.soyFree, suitable: suitable, icon: Allergies.soy);
   }
-  
+  factory Allergy.glutamateFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
+    return Allergy(name: AppLocalizations.of(context)!.glutamateFree, suitable: suitable, icon: Allergies.glutamate);
+  }
+
   
   color()=> getColorForYesMaybeNo(suitable);
 }
