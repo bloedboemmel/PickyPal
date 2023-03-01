@@ -24,6 +24,10 @@
   "@pleaseFund": {
     "description": "Please fund me!"
   },
+  "cameraNotWorking": "Camera is not working properly, try to restart the app!",
+  "@cameraNotWorking": {
+    "description": "Text, which appears, if the camera is broken"
+  },
   "vegan": "Vegan",
   "@vegan": {
     "description": "Vegan"
