@@ -1,6 +1,5 @@
 
-import 'package:PickyPal/Allergy.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:PickyPal/FoodPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,80 +44,80 @@ class _SettingsPageState extends State<SettingsPage> {
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.glutenFree = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.glutenfree(context: context).name),
-                      leading: Icon(Allergy.glutenfree(context: context).icon)
+                      title: Text(FoodPreference.glutenfree(context: context).name),
+                      leading: Icon(FoodPreference.glutenfree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.lactoseFree,
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.lactoseFree = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.dairyFree(context: context).name),
-                      leading: Icon(Allergy.dairyFree(context: context).icon)
+                      title: Text(FoodPreference.dairyFree(context: context).name),
+                      leading: Icon(FoodPreference.dairyFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.nutFree,
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.nutFree = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.nutsFree(context: context).name),
-                      leading: Icon(Allergy.nutsFree(context: context).icon)
+                      title: Text(FoodPreference.nutsFree(context: context).name),
+                      leading: Icon(FoodPreference.nutsFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.vegetarian,
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.vegetarian = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.vegetarian(context: context).name),
-                      leading: Icon(Allergy.vegetarian(context: context).icon)
+                      title: Text(FoodPreference.vegetarian(context: context).name),
+                      leading: Icon(FoodPreference.vegetarian(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.vegan,
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.vegan = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.vegan(context: context).name),
-                      leading: Icon(Allergy.vegan(context: context).icon)
+                      title: Text(FoodPreference.vegan(context: context).name),
+                      leading: Icon(FoodPreference.vegan(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.palmOilFree,
                       onToggle: (value) {
                                 setState(() {
                                   userPreferences.palmOilFree = value;
-                                  userPreferences._saveAllergies();
+                                  userPreferences._saveFoodPrefs();
                                 });},
-                      title: Text(Allergy.palmOilFree(context: context).name),
-                      leading: Icon(Allergy.palmOilFree(context: context).icon)
+                      title: Text(FoodPreference.palmOilFree(context: context).name),
+                      leading: Icon(FoodPreference.palmOilFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.soyFree,
                       onToggle: (value) {
                         setState(() {
                           userPreferences.soyFree = value;
-                          userPreferences._saveAllergies();
+                          userPreferences._saveFoodPrefs();
                         });},
-                      title: Text(Allergy.soyFree(context: context).name),
-                      leading: Icon(Allergy.soyFree(context: context).icon)
+                      title: Text(FoodPreference.soyFree(context: context).name),
+                      leading: Icon(FoodPreference.soyFree(context: context).icon)
                   ),
                   SettingsTile.switchTile(
                       initialValue: userPreferences.glutamateFree,
                       onToggle: (value) {
                         setState(() {
                           userPreferences.glutamateFree = value;
-                          userPreferences._saveAllergies();
+                          userPreferences._saveFoodPrefs();
                         });},
-                      title: Text(Allergy.glutamateFree(context: context).name),
-                      leading: Icon(Allergy.glutamateFree(context: context).icon)
+                      title: Text(FoodPreference.glutamateFree(context: context).name),
+                      leading: Icon(FoodPreference.glutamateFree(context: context).icon)
                   )
                  ],
 
@@ -171,7 +170,7 @@ class UserPreferences{
         vegan: false, palmOilFree: false, vegetarian: false, soyFree: false,
         glutamateFree: false,themeMode:ThemeMode.system);
   }
-  void _saveAllergies() async {
+  void _saveFoodPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('glutenFree', glutenFree);
     await prefs.setBool('lactoseFree', lactoseFree);
