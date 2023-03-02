@@ -26,13 +26,13 @@ If you encounter any issues or have any questions, please don't hesitate to open
 ## Add a new food preference
 ### Generate icon
 
-1. Visit (https://icons8.com/)[https://icons8.com/]
+1. Visit [https://icons8.com/](https://icons8.com/)
     * Search for the icon you want to use
-    * Download it and convert it so (svg)[https://convertio.co/png-svg/]
+    * Download it and convert it so [svg](https://convertio.co/png-svg/)
     * Make sure to rename the file to `{food_preference}.svg`
     * Add the file to the `assets/images/foodIcons/png` and `assets/images/foodIcons/svg` folders
 2. Turn the svgs into a font
-    * Visit (https://www.fluttericon.com/)[https://www.fluttericon.com/] and upload the svg files
+    * Visit [https://www.fluttericon.com/](https://www.fluttericon.com/) and upload the svg files
     * Download the font and add the ttf to lib/assets/fonts/ as FoodIcons.ttf
     * Add the font to pubspec.yaml
         ```yaml
@@ -52,7 +52,7 @@ If you encounter any issues or have any questions, please don't hesitate to open
    * Add the food preference to the UserPreferences class
 6. Add the food preference to the product
     * Add the food preference to the Product class
-    * Search for the food preference in (https://world.openfoodfacts.org/api/v2/product/{product})[https://world.openfoodfacts.org/api/v2/product/4088700093214] and get the right tags 
+    * Search for the food preference in [https://world.openfoodfacts.org/api/v2/product/{product}](https://world.openfoodfacts.org/api/v2/product/4088700093214) and get the right tags 
 7. Add the language strings
    * Add the food preference to the language strings in "lib/assets/languages/app_en.arb"
    * Add the food preference to the language strings in "lib/assets/languages/app_de.arb"
