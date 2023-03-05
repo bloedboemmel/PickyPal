@@ -284,6 +284,9 @@ class _Product extends State<ProductView> {
     if(userPreferences.glutamateFree){
       foodPrefs.add(FoodPreference.glutamateFree(context: context, suitable: isGlutamateFree(product)));
     }
+    if(userPreferences.carbohydrates){
+      foodPrefs.add(FoodPreference.carbohydrates(context: context, suitable:  isLessCarboHydrates(product, userPreferences)));
+    }
     return foodPrefs;
   }
   YESMAYBENO isGlutenFree(Product product) {
@@ -315,5 +318,8 @@ class _Product extends State<ProductView> {
   }
   YESMAYBENO isGlutamateFree(Product product){
     return product.glutamatefree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isLessCarboHydrates(Product product, UserPreferences userPreferences){
+    return product.carbohydrates_100g < userPreferences.carbohydrateslimit? YESMAYBENO.yes: YESMAYBENO.no;
   }
 }

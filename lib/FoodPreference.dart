@@ -31,6 +31,9 @@ class FoodPreference{
   factory FoodPreference.glutamateFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
     return FoodPreference(name: AppLocalizations.of(context)!.glutamateFree, suitable: suitable, icon: FoodIcons.glutamate);
   }
+  factory FoodPreference.carbohydrates({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
+    return FoodPreference(name: AppLocalizations.of(context)!.carbohydrates, suitable: suitable, icon: FoodIcons.kcal);
+  }
 
   
   color()=> getColorForYesMaybeNo(suitable);

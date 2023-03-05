@@ -28,6 +28,14 @@
   "@pleaseFund": {
     "description": "Please fund me!"
   },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button for settings"
+  },
+  "ok": "Ok",
+  "@ok": {
+    "description": "Ok button for settings"
+  },
   "cameraNotWorking": "Camera is not working properly, try to restart the app!",
   "@cameraNotWorking": {
     "description": "Text, which appears, if the camera is broken"
@@ -63,5 +71,13 @@
   "glutamateFree": "Glutamate Free",
   "@glutamateFree": {
     "description": "Glutamate Free"
+  },
+  "carbohydrates": "Carbohydrates",
+  "@carbohydrates": {
+    "description": "Carbohydrates"
+  },
+  "carbohydrateslimit": "kcal/100g",
+  "@carbohydrateslimit": {
+    "description": "Carbohydrates-Limit/100g"
   }
 }

@@ -7,6 +7,8 @@
   "funding": "Finanzierung",
   "pleaseFund": "Bitte unterstütze mich, indem du die App finanziert.",
   "cameraNotWorking": "Die Kamera funktioniert leider nicht richtig. Versuche, die App zuzustarten!",
+  "cancel": "Abbrechen!",
+  "ok": "Ok",
   "vegan": "Vegan",
   "vegetarian": "Vegetarisch",
   "glutenFree": "Glutenfrei",
@@ -15,5 +17,7 @@
   "palmOilFree": "Palmölfrei",
   "dairyFree": "Milchfrei",
   "soyFree": "Sojafrei",
-  "glutamateFree": "Glutamatfrei"
+  "glutamateFree": "Glutamatfrei",
+  "carbohydrates": "Kohlenhydrate",
+  "carbohydrateslimit": "kcal/100g"
 }

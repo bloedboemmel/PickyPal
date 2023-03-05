@@ -41,12 +41,13 @@ Future<Product> getResult(String barcode) async {
         vegeterian: maybe,
         palmoilfree: maybe,
         soyfree: false,
-        glutamatefree: false
+        glutamatefree: false,
+        carbohydrates_100g: 0,
     );
   }
   String uri = "https://world.openfoodfacts.org/api/v2/product/";
   // https://world.openfoodfacts.org/api/v2/product/4008452027602?fields=allergens,generic_name,labels,ingredients_analysis_tags
-  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients,ingredients_from_or_that_may_be_from_palm_oil_n,ingredients_from_palm_oil_n,ingredients";
+  String tags = "?fields=allergens,ingredients_analysis_tags,generic_name,labels,code,product_name,allergens_from_ingredients,ingredients_from_or_that_may_be_from_palm_oil_n,ingredients_from_palm_oil_n,ingredients,nutriments";
   final response = await http
       .get(Uri.parse(uri + barcode + tags));
 
@@ -68,13 +69,14 @@ class Product {
   bool nutfree = false;
   bool soyfree = false;
   bool glutamatefree = false;
+  int carbohydrates_100g = 0;
   YESMAYBENO vegan = YESMAYBENO.maybe;
   YESMAYBENO vegeterian =   YESMAYBENO.maybe;
   YESMAYBENO palmoilfree = YESMAYBENO.maybe;
   Product({required this.title, required this.barcode, required this.glutenfree,
     required this.lactosefree, required this.nutfree, required this.vegan,
     required this.vegeterian, required this.palmoilfree, required this.soyfree, 
-    required this.glutamatefree
+    required this.glutamatefree, required this.carbohydrates_100g
   });
   bool isAllFree(){
     return nutfree && glutenfree && lactosefree;
@@ -99,14 +101,15 @@ class Product {
         barcode: json['code'],
         glutenfree: !allergens.contains('gluten'),
         nutfree: !allergens.contains('peanuts'),
-        lactosefree: !allergens.contains('milk'),
+        lactosefree: !allergens.contains('milk') && !allergens.contains('lactose'),
         vegan: suitableFor(list, "vegan"),
         vegeterian: suitableFor(list, "vegetarian"),
         palmoilfree: ispalmoilfree(list,
             ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'],
             ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n']),
         soyfree: !allergens.contains("soy"),
-        glutamatefree: !ingredients.any((element) => element.values.contains("glutamat"))
+        glutamatefree: !ingredients.any((element) => element.values.contains("glutamat")),
+        carbohydrates_100g: json['product']['nutriments']['carbohydrates_100g']
 
 
     );
