@@ -109,7 +109,7 @@ class Product {
             ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n']),
         soyfree: !allergens.contains("soy"),
         glutamatefree: !ingredients.any((element) => element.values.contains("glutamat")),
-        carbohydrates_100g: json['product']['nutriments']['carbohydrates_100g']
+        carbohydrates_100g: json['product']['nutriments']['carbohydrates_100g'].round()
 
 
     );

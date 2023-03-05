@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
