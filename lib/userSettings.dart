@@ -1,4 +1,6 @@
 
+// ignore_for_file: non_constant_identifier_names, file_names
+
 import 'package:PickyPal/FoodPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
