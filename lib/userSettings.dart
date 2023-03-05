@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     // String language = "English";
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Settings'),
+          title: Text(AppLocalizations.of(context)!.settings),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
@@ -37,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
         body: SettingsList(
             sections: [
               SettingsSection(
-                title: const Text("Common"),
+                title:  Text(AppLocalizations.of(context)!.common),
                 tiles: [
                   SettingsTile.switchTile(
                       initialValue: userPreferences.glutenFree,

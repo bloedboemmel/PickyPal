@@ -16,6 +16,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "common": "Common",
+  "@common": {
+    "description": "Common Settings part"
+  },
   "funding": "Funding",
   "@funding": {
     "description": "Funding"
