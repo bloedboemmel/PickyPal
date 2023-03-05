@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:PickyPal/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,6 +32,9 @@ class FoodPreference{
   }
   factory FoodPreference.glutamateFree({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
     return FoodPreference(name: AppLocalizations.of(context)!.glutamateFree, suitable: suitable, icon: FoodIcons.glutamate);
+  }
+  factory FoodPreference.carbohydrates({required BuildContext context, YESMAYBENO suitable= YESMAYBENO.no}){
+    return FoodPreference(name: AppLocalizations.of(context)!.carbohydrates, suitable: suitable, icon: FoodIcons.kcal);
   }
 
   

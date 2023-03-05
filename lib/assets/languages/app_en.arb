@@ -16,6 +16,10 @@
   "@settings": {
     "description": "Settings"
   },
+  "common": "Common",
+  "@common": {
+    "description": "Common Settings part"
+  },
   "funding": "Funding",
   "@funding": {
     "description": "Funding"
@@ -23,6 +27,14 @@
   "pleaseFund": "Please fund me!",
   "@pleaseFund": {
     "description": "Please fund me!"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button for settings"
+  },
+  "ok": "Ok",
+  "@ok": {
+    "description": "Ok button for settings"
   },
   "cameraNotWorking": "Camera is not working properly, try to restart the app!",
   "@cameraNotWorking": {
@@ -59,5 +71,13 @@
   "glutamateFree": "Glutamate Free",
   "@glutamateFree": {
     "description": "Glutamate Free"
+  },
+  "carbohydrates": "Carbohydrates",
+  "@carbohydrates": {
+    "description": "Carbohydrates"
+  },
+  "carbohydrateslimit": "kcal/100g",
+  "@carbohydrateslimit": {
+    "description": "Carbohydrates-Limit/100g"
   }
 }

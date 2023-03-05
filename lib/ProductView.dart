@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:PickyPal/product.dart';
 import 'package:PickyPal/userSettings.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -30,9 +32,12 @@ class ProductView extends StatefulWidget{
 
 class _Product extends State<ProductView> {
   final String barcode;
-
+  int touchedIndex = -1;
   _Product({required this.barcode});
-
+  bool _showTooltip = false;
+  Offset tooltipPosition = const Offset(0, 0);
+  String tooltipText = "";
+  bool tappedMiddle = false;
   late String scanresult;
 
   @override
@@ -139,14 +144,19 @@ class _Product extends State<ProductView> {
   }
 
   Future<Widget> PieChartProducts(UserPreferences userPreferences, String barcode) async {
+
     Product product = await getResult(barcode);
     List<FoodPreference> foodPrefs = await checkAll(userPreferences, product);
     YESMAYBENO suitable = isSuitable(foodPrefs);
     List<PieChartSectionData> piechartsections =  List.empty(growable: true);
+
     for (var foodPref in foodPrefs) {
       piechartsections.add(PieChartSectionData(
           color: foodPref.color(),
-          badgeWidget: Icon(foodPref.icon)
+          badgeWidget: Icon(foodPref.icon),
+          title: foodPref.name,
+          showTitle: false
+
       ));
 
     }
@@ -186,23 +196,79 @@ class _Product extends State<ProductView> {
     return Stack(
           alignment: Alignment.center,
           children: [
+
             Align(
               alignment: Alignment.center,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
+
                   MiddleWidget(suitable),
                   PieChart(
-                    PieChartData(sections: piechartsections, centerSpaceRadius: MediaQuery.of(context).size.width / 5),
+                    PieChartData(sections: piechartsections,
+                        centerSpaceRadius: MediaQuery.of(context).size.width / 5,
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            if (pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                              return;
+                            }
+
+                            final touchedSectionIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                            if (touchedSectionIndex == -1){
+                              setState(() {
+                                _showTooltip = false;
+                              });
+                              return;
+                            }
+                            final newtooltipText = piechartsections[touchedSectionIndex].title; // replace this with the actual title of the section
+
+                            final touchPosition = event.localPosition;
+                            final newtooltipPosition = touchPosition;
+                            setState(() {
+                              tooltipPosition = newtooltipPosition!;
+                              _showTooltip = true;
+                              tooltipText = newtooltipText;
+                            });
+
+                          },
+                        )
+                        ),
                     swapAnimationDuration: const Duration(milliseconds: 150),
+
+
                   ),
                 ],
               ),
             ),
-            ProductText(product.title)
+            ProductText(product.title),
+            tooltipOrNot(),
           ]
     );
   }
+  Widget tooltipOrNot(){
+    if (_showTooltip) {
+      return Positioned(
+        left: tooltipPosition.dx,
+        top: tooltipPosition.dy,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[600],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          padding: const EdgeInsets.all(5),
+          child: Text(
+            tooltipText,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+  
   Container MiddleWidget(YESMAYBENO suitable){
     return Container(
       height: MediaQuery.of(context).size.width / 2.5,
@@ -231,6 +297,7 @@ class _Product extends State<ProductView> {
       ),
     );
   }
+
   Positioned ProductText(String text){
     return  Positioned(
         left: 0,
@@ -284,6 +351,9 @@ class _Product extends State<ProductView> {
     if(userPreferences.glutamateFree){
       foodPrefs.add(FoodPreference.glutamateFree(context: context, suitable: isGlutamateFree(product)));
     }
+    if(userPreferences.carbohydrates){
+      foodPrefs.add(FoodPreference.carbohydrates(context: context, suitable:  isLessCarboHydrates(product, userPreferences)));
+    }
     return foodPrefs;
   }
   YESMAYBENO isGlutenFree(Product product) {
@@ -315,5 +385,8 @@ class _Product extends State<ProductView> {
   }
   YESMAYBENO isGlutamateFree(Product product){
     return product.glutamatefree ? YESMAYBENO.yes : YESMAYBENO.no;
+  }
+  YESMAYBENO isLessCarboHydrates(Product product, UserPreferences userPreferences){
+    return product.carbohydrates_100g < userPreferences.carbohydrateslimit? YESMAYBENO.yes: YESMAYBENO.no;
   }
 }

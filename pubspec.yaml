@@ -8,7 +8,7 @@ documentation: https://github.com/bloedboemmel/PickyPal
 repository: https://github.com/bloedboemmel/PickyPal
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.2+9
+version: 1.0.3+10
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
@@ -32,6 +32,7 @@ dependencies:
   fl_chart: ^0.61.0
   settings_ui: 2.0.2
   url_launcher: ^6.0.3
+  numberpicker: ^2.0.1
 
 
 
