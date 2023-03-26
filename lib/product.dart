@@ -92,24 +92,32 @@ class Product {
     return false;
   }
   factory Product.fromJson(Map<String, dynamic> json) {
-    String allergens = json['product']['allergens'] + ', ' +
-        json['product']['allergens_from_ingredients'];
-    List<dynamic> list = json['product']["ingredients_analysis_tags"];
-    List<dynamic> ingredients = json['product']['ingredients'];
+    String allergens = (json['product']['allergens'] ?? '') + ', ' +
+        (json['product']['allergens_from_ingredients']?? '');
+    List<dynamic> list = json['product']["ingredients_analysis_tags"] ?? [];
+    List<dynamic> ingredients = json['product']['ingredients'] ?? [];
+    int carbohydrates;
+    try {
+      carbohydrates =  json['product']['nutriments']['carbohydrates_100g'].round();
+    }
+    on NoSuchMethodError catch (e) {
+      carbohydrates =  -1;
+    }
+
     return Product(
-        title: json['product']['product_name'],
-        barcode: json['code'],
+        title: json['product']['product_name'] ?? '',
+        barcode: json['code'] ?? '',
         glutenfree: !allergens.contains('gluten'),
         nutfree: !allergens.contains('peanuts'),
         lactosefree: !allergens.contains('milk') && !allergens.contains('lactose'),
         vegan: suitableFor(list, "vegan"),
         vegeterian: suitableFor(list, "vegetarian"),
         palmoilfree: ispalmoilfree(list,
-            ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'],
-            ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n']),
+            ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'] ?? [],
+            ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n'] ?? []),
         soyfree: !allergens.contains("soy"),
         glutamatefree: !ingredients.any((element) => element.values.contains("glutamat")),
-        carbohydrates_100g: json['product']['nutriments']['carbohydrates_100g'].round()
+        carbohydrates_100g: carbohydrates
 
 
     );

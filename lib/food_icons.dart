@@ -26,7 +26,7 @@ class FoodIcons {
   static const IconData milk = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData nut = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData palm = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData kcal = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData carbs = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData soy = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData glutamate = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData vegan = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);

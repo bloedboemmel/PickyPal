@@ -76,7 +76,7 @@
   "@carbohydrates": {
     "description": "Carbohydrates"
   },
-  "carbohydrateslimit": "kcal/100g",
+  "carbohydrateslimit": "g/100g",
   "@carbohydrateslimit": {
     "description": "Carbohydrates-Limit/100g"
   }
