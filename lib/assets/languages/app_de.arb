@@ -19,5 +19,5 @@
   "soyFree": "Sojafrei",
   "glutamateFree": "Glutamatfrei",
   "carbohydrates": "Kohlenhydrate",
-  "carbohydrateslimit": "kcal/100g"
+  "carbohydrateslimit": "g/100g"
 }

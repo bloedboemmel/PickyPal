@@ -387,6 +387,7 @@ class _Product extends State<ProductView> {
     return product.glutamatefree ? YESMAYBENO.yes : YESMAYBENO.no;
   }
   YESMAYBENO isLessCarboHydrates(Product product, UserPreferences userPreferences){
+    if (product.carbohydrates_100g == -1) return YESMAYBENO.maybe;
     return product.carbohydrates_100g < userPreferences.carbohydrateslimit? YESMAYBENO.yes: YESMAYBENO.no;
   }
 }
