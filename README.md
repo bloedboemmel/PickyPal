@@ -1,4 +1,4 @@
-# PickyPal
+# PickyPal [Now live on Google Play](https://play.google.com/store/apps/details?id=com.pickypal.android)
 Welcome to the PickyPal GitHub repo!
 
 PickyPal is a convenient and easy-to-use food scanning app that allows you to scan any barcode and instantly see if the product is suitable for your dietary needs. Whether you have allergies to gluten, nuts, soy, or lactose, or you follow a vegetarian, vegan, or palm-oil-free diet, PickyPal has got you covered.
