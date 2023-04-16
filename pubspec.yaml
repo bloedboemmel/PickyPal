@@ -32,7 +32,7 @@ dependencies:
   fl_chart: ^0.61.0
   settings_ui: 2.0.2
   url_launcher: ^6.0.3
-  numberpicker: ^2.0.1
+  numberpicker: ^2.1.2
 
 
 
