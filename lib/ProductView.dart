@@ -1,7 +1,9 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'package:PickyPal/errors.dart';
 import 'package:PickyPal/product.dart';
 import 'package:PickyPal/userSettings.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +62,14 @@ class _Product extends State<ProductView> {
               if (snapshot.hasData) {
                 return snapshot.data;
               } else if (snapshot.hasError) {
+                if (snapshot.error is ProductNotFoundException){
+                  FirebaseCrashlytics.instance.recordError(snapshot.error, snapshot.stackTrace, reason: "ProductNotFound", fatal: false, information: [barcode]);
+
+                }
+                else{
+                  FirebaseCrashlytics.instance.recordError(snapshot.error, snapshot.stackTrace, reason: "ProductViewFailed", fatal: true, information: [barcode]);
+                }
+
                 return productNotFound(context);
               }
 
