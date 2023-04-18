@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "129943256555",
+    "project_id": "pickypal-ddcca",
+    "storage_bucket": "pickypal-ddcca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129943256555:android:1de1f6b1c7828448f7adae",
+        "android_client_info": {
+          "package_name": "com.pickypal.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129943256555-f13qnp32lliv9otqnul10tip45m2kc8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs-uMj6pY1iZzPjlkQc3cLrEyLooR1ryg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129943256555-f13qnp32lliv9otqnul10tip45m2kc8c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "129943256555-cicq9gtnqa7pqruigf292ji0arpsbq5n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterBarcode3"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
