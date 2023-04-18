@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'errors.dart';
 
 enum YESMAYBENO{
   yes,
@@ -58,7 +59,7 @@ Future<Product> getResult(String barcode) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load product');
+    throw ProductNotFoundException(barcode);
   }
 }
 class Product {
@@ -100,7 +101,7 @@ class Product {
     try {
       carbohydrates =  json['product']['nutriments']['carbohydrates_100g'].round();
     }
-    on NoSuchMethodError catch (e) {
+    on NoSuchMethodError{
       carbohydrates =  -1;
     }
 
@@ -113,8 +114,8 @@ class Product {
         vegan: suitableFor(list, "vegan"),
         vegeterian: suitableFor(list, "vegetarian"),
         palmoilfree: ispalmoilfree(list,
-            ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'] ?? [],
-            ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n'] ?? []),
+            ingredientsMaybeFromPalmOil: json['product']['ingredients_from_or_that_may_be_from_palm_oil_n'] ?? 0,
+            ingredientsFromPalmOil: json['product']['ingredients_from_palm_oil_n'] ?? 0),
         soyfree: !allergens.contains("soy"),
         glutamatefree: !ingredients.any((element) => element.values.contains("glutamat")),
         carbohydrates_100g: carbohydrates
