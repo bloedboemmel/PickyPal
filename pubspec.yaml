@@ -27,7 +27,7 @@ dependencies:
       url: https://github.com/ADDInformatique/flutter_qr_mobile_vision
       ref: master
   flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.13.0
   provider: ^6.0.1
   fl_chart: ^0.62.0
   settings_ui: 2.0.2
