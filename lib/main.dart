@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+
       home: const HomeScreen(),
     );
   }
@@ -84,7 +85,11 @@ class _HomeScreen extends State<HomeScreen>{
       Scaffold(
          body: Stack(
            children: [
-             const CamScanner(),
+             Semantics(
+               label: AppLocalizations.of(context)!.barcodescannerscreen,
+               focused: true,
+               child: const CamScanner(),
+             ),
              Positioned(
                bottom: 50.0,
                right: 20.0,
@@ -95,6 +100,7 @@ class _HomeScreen extends State<HomeScreen>{
                     ),
                    child:IconButton(
                          icon: const Icon(Icons.settings),
+                         tooltip: AppLocalizations.of(context)!.settingsbuttonsemantics,
                          onPressed: () {
                            Navigator.push(context,
                                MaterialPageRoute(builder: (context) =>const SettingsPage()));
