@@ -3,6 +3,24 @@
   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
   },
+  "barcodescannerscreen": "Barcode-Scanner. Scan any product",
+  "@barcodescannerscreen": {
+    "description": "Title of the barcode screen"
+  },
+  "pickypal": "Pickypal",
+  "@pickypal": {
+    "description": "name of the app"
+  },
+  "back":"back",
+  "product": "product",
+  "preferenceon": " activated",
+  "@preferenceon": {
+    "description": "If the preference is activated"
+  },
+  "preferenceoff": " deactivated",
+  "@preferenceoff": {
+    "description": "If the preference is deactivated"
+  },
 
   "noProductFound": "Sorry, we couldn't find that product," ,
   "@noProductFound": {
@@ -12,8 +30,25 @@
   "@addProduct": {
     "description": "Blue underlined text with url to database"
   },
+  "productsuitable": " is suitable for your preferences",
+  "@productsuitable": {
+    "description": "If the product is suitable for the preferences"
+  },
+  "productnotsuitable": " is not suitable for your preferences, because it's not ",
+  "@productnotsuitable": {
+    "description": "If the product is suitable for the preferences"
+  },
+  "productmaybesuitable": " is maybe suitable for your preferences, because it's maybe not ",
+  "@productmaybesuitable": {
+    "description": "If the product is suitable for the preferences"
+  },
+
   "settings": "Settings",
   "@settings": {
+    "description": "Settings"
+  },
+  "settingsbuttonsemantics": "Settings",
+  "@settingsbuttonsemantics": {
     "description": "Settings"
   },
   "common": "Common",
@@ -79,5 +114,9 @@
   "carbohydrateslimit": "g/100g",
   "@carbohydrateslimit": {
     "description": "Carbohydrates-Limit/100g"
+  },
+  "carbohydrateslimitsemantics": "gramm per 100g",
+  "@carbohydrateslimitsemantics": {
+    "description": "Carbohydrates-Limit/100g for semantics"
   }
 }

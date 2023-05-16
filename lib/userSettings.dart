@@ -32,10 +32,14 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(AppLocalizations.of(context)!.settings),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
+            tooltip: AppLocalizations.of(context)!.back,
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: SettingsList(
+        body: Semantics(
+          label: AppLocalizations.of(context)!.common,
+          focused: true,
+          child: SettingsList(
           sections: [
             SettingsSection(
               title: Text(AppLocalizations.of(context)!.common),
@@ -48,9 +52,12 @@ class _SettingsPageState extends State<SettingsPage> {
                         userPreferences._saveFoodPrefs();
                       });
                     },
-                    title: Text(FoodPreference
-                        .glutenfree(context: context)
-                        .name),
+                      title: Text(FoodPreference
+                          .glutenfree(context: context)
+                          .name,
+                      semanticsLabel: FoodPreference
+                          .glutenfree(context: context)
+                          .name + (userPreferences.glutenFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .glutenfree(context: context)
                         .icon)
@@ -65,7 +72,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .dairyFree(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .dairyFree(context: context)
+                            .name + (userPreferences.lactoseFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .dairyFree(context: context)
                         .icon)
@@ -80,7 +90,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .nutsFree(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .nutsFree(context: context)
+                            .name + (userPreferences.nutFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .nutsFree(context: context)
                         .icon)
@@ -95,7 +108,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .vegetarian(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .vegetarian(context: context)
+                            .name + (userPreferences.vegetarian == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .vegetarian(context: context)
                         .icon)
@@ -110,7 +126,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .vegan(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .vegan(context: context)
+                            .name + (userPreferences.vegan == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .vegan(context: context)
                         .icon)
@@ -125,7 +144,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .palmOilFree(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .palmOilFree(context: context)
+                            .name + (userPreferences.palmOilFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .palmOilFree(context: context)
                         .icon)
@@ -140,7 +162,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .soyFree(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .soyFree(context: context)
+                            .name + (userPreferences.soyFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .soyFree(context: context)
                         .icon)
@@ -155,7 +180,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .glutamateFree(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .glutamateFree(context: context)
+                            .name + (userPreferences.glutamateFree == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .glutamateFree(context: context)
                         .icon)
@@ -170,13 +198,17 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     title: Text(FoodPreference
                         .carbohydrates(context: context)
-                        .name),
+                        .name,
+                        semanticsLabel: FoodPreference
+                            .carbohydrates(context: context)
+                            .name + (userPreferences.carbohydrates == true? AppLocalizations.of(context)!.preferenceon: AppLocalizations.of(context)!.preferenceoff)),
                     leading: Icon(FoodPreference
                         .carbohydrates(context: context)
                         .icon),
                 ),
 
-                SettingsTile(title: Text(AppLocalizations.of(context)!.carbohydrateslimit),
+                SettingsTile(title: Text(AppLocalizations.of(context)!.carbohydrateslimit,
+                                         semanticsLabel: AppLocalizations.of(context)!.carbohydrateslimitsemantics),
                     enabled: userPreferences.carbohydrates,
                     onPressed:  (context) => carbonPicker(context),
                     leading: const Icon(Icons.numbers),
@@ -204,6 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
           ],
         )
+    )
     );
   }
 

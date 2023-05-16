@@ -74,13 +74,15 @@ class _Product extends State<ProductView> {
               }
 
               // By default, show a loading spinner.
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(semanticsLabel: "Loading",));
             },
           )
     );
   }
   Widget productNotFound(BuildContext context){
-    return Stack(
+    return Semantics(
+        focused: true,
+        child: Stack(
         children: [
           Align(
               child:
@@ -150,6 +152,7 @@ class _Product extends State<ProductView> {
             ),
           )
         ]
+    )
     );
   }
 
@@ -171,7 +174,10 @@ class _Product extends State<ProductView> {
 
     }
     if (foodPrefs.isEmpty){
-      return Stack(
+      return Semantics(
+          label: ProductTextSemantics(product, suitable, foodPrefs),
+          focused: true,
+          child: Stack(
           children: [
             Align(
                 child:
@@ -184,10 +190,14 @@ class _Product extends State<ProductView> {
             ),
             ProductText(product.title)
           ]
+      )
       );
     }
     else if(foodPrefs.length == 1){
-       return Stack(
+       return Semantics(
+           label: ProductTextSemantics(product, suitable, foodPrefs),
+           focused: true,
+         child: Stack(
           children: [
              Align(
               child:
@@ -200,10 +210,14 @@ class _Product extends State<ProductView> {
              ),
             ProductText(product.title)
             ]
-          );
+          )
+       );
 
     }
-    return Stack(
+    return Semantics(
+        label: ProductTextSemantics(product, suitable, foodPrefs),
+        focused: true,
+        child: Stack(
           alignment: Alignment.center,
           children: [
 
@@ -253,6 +267,7 @@ class _Product extends State<ProductView> {
             ProductText(product.title),
             tooltipOrNot(),
           ]
+    )
     );
   }
   Widget tooltipOrNot(){
@@ -318,6 +333,31 @@ class _Product extends State<ProductView> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 20)),
     );
+  }
+  String ProductTextSemantics(Product product, YESMAYBENO suitable, List<FoodPreference> foodPrefs){
+    String string = product.title != ""? product.title : AppLocalizations.of(context)!.product;
+    if(suitable == YESMAYBENO.yes){
+      string += AppLocalizations.of(context)!.productsuitable;
+    }
+    else if(suitable == YESMAYBENO.maybe){
+      string += AppLocalizations.of(context)!.productmaybesuitable;
+      for(var foodPref in foodPrefs){
+         if(foodPref.suitable == YESMAYBENO.maybe){
+           string += " ${foodPref.name}";
+         }
+      }
+    }
+    else if(suitable == YESMAYBENO.no){
+      string += AppLocalizations.of(context)!.productnotsuitable;
+      for(var foodPref in foodPrefs){
+        if(foodPref.suitable == YESMAYBENO.no){
+          string += " ${foodPref.name}";
+        }
+      }
+    }
+
+
+    return string;
   }
   YESMAYBENO isSuitable(List<FoodPreference> foodPrefs){
     //If one of the foodPrefs is no, the product is not suitable

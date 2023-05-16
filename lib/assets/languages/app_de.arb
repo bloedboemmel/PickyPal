@@ -1,12 +1,22 @@
 {
   "helloWorld": "Hallo Welt!",
+  "barcodescannerscreen": "Barcode-Scanner. Scanne ein Produkt",
+  "pickypal": "Pickypal",
+  "back":"zurück",
+  "product": "Produkt",
+  "preferenceon": " aktiviert",
+  "preferenceoff": " deaktiviert",
   "noProductFound": "Wir konnten leider kein Produkt finden,",
   "addProduct": "aber du kannst das Produkt hier hinzufügen!",
+  "productsuitable": " ist passend für dich",
+  "productnotsuitable": " ist nicht passend für dich, denn es ist nicht ",
+  "productmaybesuitable": " ist vielleicht passend für dich, denn es ist vielleicht nicht ",
   "settings": "Einstellungen",
+  "settingsbuttonsemantics": "Einstellungen",
   "common": "Allgemein",
   "funding": "Finanzierung",
   "pleaseFund": "Bitte unterstütze mich, indem du die App finanziert.",
-  "cameraNotWorking": "Die Kamera funktioniert leider nicht richtig. Versuche, die App zuzustarten!",
+  "cameraNotWorking": "Die Kamera funktioniert leider nicht richtig. Versuche, die App neuzustarten!",
   "cancel": "Abbrechen!",
   "ok": "Ok",
   "vegan": "Vegan",
@@ -19,5 +29,6 @@
   "soyFree": "Sojafrei",
   "glutamateFree": "Glutamatfrei",
   "carbohydrates": "Kohlenhydrate",
-  "carbohydrateslimit": "g/100g"
+  "carbohydrateslimit": "g/100g",
+  "carbohydrateslimitsemantics": "gramm pro 100g"
 }
