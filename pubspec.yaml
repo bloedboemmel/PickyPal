@@ -35,7 +35,7 @@ dependencies:
   numberpicker: ^2.1.2
   firebase_core: ^2.12.0
   firebase_crashlytics: ^3.3.0
-  visibility_detector: ^0.3.3
+  visibility_detector: ^0.4.0+2
 
 
 
