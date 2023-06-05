@@ -34,7 +34,7 @@ dependencies:
   url_launcher: ^6.0.3
   numberpicker: ^2.1.2
   firebase_core: ^2.12.0
-  firebase_crashlytics: ^3.3.0
+  firebase_crashlytics: ^3.3.2
   visibility_detector: ^0.3.3
 
 
