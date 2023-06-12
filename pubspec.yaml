@@ -21,7 +21,7 @@ dependencies:
   intl: 0.17.0
   cupertino_icons: ^1.0.2
   http: 0.13.6
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.1.2
   qr_mobile_vision:
     git:
       url: https://github.com/ADDInformatique/flutter_qr_mobile_vision
