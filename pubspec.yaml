@@ -9,7 +9,7 @@ documentation: https://github.com/bloedboemmel/PickyPal
 repository: https://github.com/bloedboemmel/PickyPal
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.7+14
+version: 1.0.8+15
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
