@@ -49,12 +49,12 @@ jobs:
 
       # Make appbundle downloadable
       - name: Upload artefato
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: appbundle
           path: build/app/outputs/bundle/release
       - run: flutter build apk
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
