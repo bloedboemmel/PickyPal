@@ -11,6 +11,8 @@ on:
     workflows: ["Receive PR"]
     types:
       - completed
+  workflow_dispatch:
+
     
 
 env:
